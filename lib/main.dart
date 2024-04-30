@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:puppicasso/screens/splash/splash_screen.dart';
+import 'package:puppicasso/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -7,8 +7,8 @@ import 'routes.dart';
 import 'theme.dart';
 
 void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
       const ProviderScope(child: MyApp())
   );
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'puppicasso',
       theme: AppTheme.lightTheme(context),
-      initialRoute: SplashScreen.routeName,
+      initialRoute: SignInScreen.routeName,
       routes: routes,
     );
   }

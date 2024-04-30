@@ -6,7 +6,7 @@ class AppTheme {
   static ThemeData lightTheme(BuildContext context) {
     return ThemeData(
       scaffoldBackgroundColor: Colors.white,
-      fontFamily: "Muli",
+      fontFamily: "Wavve",
       appBarTheme: const AppBarTheme(
           color: Colors.white,
           elevation: 0,

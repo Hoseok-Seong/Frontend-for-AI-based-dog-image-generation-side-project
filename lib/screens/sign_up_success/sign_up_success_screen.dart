@@ -17,9 +17,9 @@ class SignUpSuccessScreen extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Text(
-            "회원가입 완료",
+            "회원가입 성공",
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 25,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),

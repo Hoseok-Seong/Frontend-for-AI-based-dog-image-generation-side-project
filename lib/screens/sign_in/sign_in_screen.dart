@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:puppicasso/components/no_account_text.dart';
-import 'package:puppicasso/components/socal_card.dart';
+import 'package:puppicasso/components/circle_container.dart';
 import 'package:puppicasso/screens/sign_in/components/sign_in_form.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -23,34 +23,31 @@ class SignInScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 16),
-                  const Text(
-                    "Puppicasso",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold
-                    ),
+                  Container(
+                    width: 200,
+                    height: 50,
+                    child: Image.asset('assets/images/logo.png'),
                   ),
                   const SizedBox(height: 12),
-                  const Text(
-                    "반려견 AI 프로필",
-                    textAlign: TextAlign.center,
-                  ),
+                  // const Text(
+                  //   "반려견 AI 프로필",
+                  //   textAlign: TextAlign.center,
+                  // ),
                   const SizedBox(height: 16),
                   const SignForm(),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SocalCard(
+                      CircleContainer(
                         icon: "assets/icons/google.svg",
                         press: () {},
                       ),
-                      SocalCard(
+                      CircleContainer(
                         icon: "assets/icons/kakao.svg",
                         press: () {},
                       ),
-                      SocalCard(
+                      CircleContainer(
                         icon: "assets/icons/naver.svg",
                         press: () {},
                       ),
