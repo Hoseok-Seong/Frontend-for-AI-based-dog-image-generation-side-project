@@ -47,6 +47,8 @@ dependencies:
   json_serializable: ^6.7.1
   # 불변객체
   freezed: ^2.5.1
+  # 스플래시 스크린
+  flutter_native_splash: ^2.2.19
 
 dev_dependencies:
   flutter_test:

@@ -36,6 +36,9 @@ class _InitScreenState extends State<InitScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+
+      ),
       body: pages[currentSelectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         onTap: updateCurrentIndex,
