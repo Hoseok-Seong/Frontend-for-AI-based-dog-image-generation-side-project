@@ -67,7 +67,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 // Do what you want to do
               }
             },
-            child: const Text("계속하기"),
+            child: const Text("비밀번호 찾기"),
           ),
           const SizedBox(height: 16),
           const NoAccountText(),

@@ -28,10 +28,7 @@ class SignUpScreen extends StatelessWidget {
                     height: 50,
                     child: Image.asset('assets/images/logo.png'),
                   ),
-                  // const Text("회원가입", style: headingStyle),
-                  // const SizedBox(height: 12),
-                  // const Text("이메일 또는 SNS", textAlign: TextAlign.center),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 28),
                   const SignUpForm(),
                   const SizedBox(height: 16),
                   Row(

@@ -179,7 +179,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     }
                   }
                 },
-                child: const Text("Continue")),
+                child: const Text("회원가입")),
           ],
         ));
   }

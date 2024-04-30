@@ -28,12 +28,7 @@ class SignInScreen extends StatelessWidget {
                     height: 50,
                     child: Image.asset('assets/images/logo.png'),
                   ),
-                  const SizedBox(height: 12),
-                  // const Text(
-                  //   "반려견 AI 프로필",
-                  //   textAlign: TextAlign.center,
-                  // ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 28),
                   const SignForm(),
                   const SizedBox(height: 16),
                   Row(

@@ -182,7 +182,7 @@ class _SignFormState extends State<SignForm> {
                 }
               }
             },
-            child: const Text("계속하기"),
+            child: const Text("로그인"),
           ),
         ],
       ),

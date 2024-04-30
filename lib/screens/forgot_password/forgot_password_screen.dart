@@ -10,7 +10,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("비밀번호 찾기"),
+        automaticallyImplyLeading: false,
       ),
       body: const SizedBox(
         width: double.infinity,
