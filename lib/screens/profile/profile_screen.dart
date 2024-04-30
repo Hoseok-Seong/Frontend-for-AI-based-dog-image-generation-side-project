@@ -21,12 +21,12 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 20),
             ProfileMenu(
               text: "My Account",
-              icon: "assets/icons/User Icon.svg",
+              icon: "assets/icons/user-svgrepo-com.svg",
               press: () => {},
             ),
             ProfileMenu(
               text: "Notifications",
-              icon: "assets/icons/Bell.svg",
+              icon: "assets/icons/notification-bell-on-svgrepo-com.svg",
               press: () {},
             ),
             ProfileMenu(

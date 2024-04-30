@@ -7,6 +7,7 @@ import 'package:puppicasso/screens/profile_download/profile_download_screen.dart
 import 'package:puppicasso/constants.dart';
 
 const Color inActiveIconColor = Color(0xFFB6B6B6);
+const Color kSecondaryColor = Color(0xFF979797);
 
 class InitScreen extends StatefulWidget {
   const InitScreen({super.key});
@@ -37,83 +38,100 @@ class _InitScreenState extends State<InitScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        leadingWidth: 150,
+        leading: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Image.asset('assets/images/logo.png'),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: SvgPicture.asset(
+                "assets/icons/notification-bell-on-svgrepo-com.svg",
+              ),
+              onPressed: () {
+              },
+            ),
+          )
+        ],
       ),
       body: pages[currentSelectedIndex],
+      backgroundColor: kSecondaryColor,
       bottomNavigationBar: BottomNavigationBar(
         onTap: updateCurrentIndex,
         currentIndex: currentSelectedIndex,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/icons/Shop Icon.svg",
+              "assets/icons/home-1393-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 inActiveIconColor,
                 BlendMode.srcIn,
               ),
             ),
             activeIcon: SvgPicture.asset(
-              "assets/icons/Shop Icon.svg",
+              "assets/icons/home-1393-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 kPrimaryColor,
                 BlendMode.srcIn,
               ),
             ),
-            label: "Home",
+            label: "홈",
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/icons/Heart Icon.svg",
+              "assets/icons/camera-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 inActiveIconColor,
                 BlendMode.srcIn,
               ),
             ),
             activeIcon: SvgPicture.asset(
-              "assets/icons/Heart Icon.svg",
+              "assets/icons/camera-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 kPrimaryColor,
                 BlendMode.srcIn,
               ),
             ),
-            label: "Fav",
+            label: "사진 생성",
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/icons/Chat bubble Icon.svg",
+              "assets/icons/gallery-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 inActiveIconColor,
                 BlendMode.srcIn,
               ),
             ),
             activeIcon: SvgPicture.asset(
-              "assets/icons/Chat bubble Icon.svg",
+              "assets/icons/gallery-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 kPrimaryColor,
                 BlendMode.srcIn,
               ),
             ),
-            label: "Chat",
+            label: "갤러리",
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              "assets/icons/User Icon.svg",
+              "assets/icons/user-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 inActiveIconColor,
                 BlendMode.srcIn,
               ),
             ),
             activeIcon: SvgPicture.asset(
-              "assets/icons/User Icon.svg",
+              "assets/icons/user-svgrepo-com.svg",
               colorFilter: const ColorFilter.mode(
                 kPrimaryColor,
                 BlendMode.srcIn,
               ),
             ),
-            label: "Fav",
+            label: "설정",
           ),
         ],
       ),
