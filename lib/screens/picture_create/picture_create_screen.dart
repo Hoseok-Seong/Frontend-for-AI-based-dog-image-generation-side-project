@@ -4,18 +4,18 @@ import 'dart:io';
 
 import 'package:puppicasso/screens/sign_in/sign_in_screen.dart';
 import 'package:puppicasso/screens/main/main_screen.dart';
-import 'package:puppicasso/screens/profile_download/profile_download_screen.dart';
+import 'package:puppicasso/screens/picture_download/picture_download_screen.dart';
 
-class ProfileCreateScreen extends StatefulWidget {
-  static String routeName = "/profile_create";
+class PictureCreateScreen extends StatefulWidget {
+  static String routeName = "/picture_create";
 
-  const ProfileCreateScreen({super.key});
+  const PictureCreateScreen({super.key});
 
   @override
-  _ProfileCreateScreenState createState() => _ProfileCreateScreenState();
+  _PictureCreateScreenState createState() => _PictureCreateScreenState();
 }
 
-class _ProfileCreateScreenState extends State<ProfileCreateScreen> {
+class _PictureCreateScreenState extends State<PictureCreateScreen> {
   XFile? _image; // 선택한 이미지를 저장하는 변수
 
   Future getImage() async {
@@ -87,7 +87,7 @@ class _ProfileCreateScreenState extends State<ProfileCreateScreen> {
               ElevatedButton(
                 onPressed: () {
                   // TODO: 생성하기 버튼이 클릭되었을 때 수행할 작업
-                  Navigator.pushNamed(context, ProfileDownloadScreen.routeName);
+                  Navigator.pushNamed(context, PictureDownloadScreen.routeName);
                 },
                 child: Text('프로필 사진 생성하기'),
               ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:puppicasso/screens/main/main_screen.dart';
-import 'package:puppicasso/screens/profile_create/profile_create_screen.dart';
+import 'package:puppicasso/screens/picture_create/picture_create_screen.dart';
 import 'package:puppicasso/screens/sign_in/sign_in_screen.dart';
 
-class ProfileDownloadScreen extends StatelessWidget {
-  static String routeName = "/profile_download";
+class PictureDownloadScreen extends StatelessWidget {
+  static String routeName = "/picture_download";
 
-  const ProfileDownloadScreen({super.key});
+  const PictureDownloadScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +55,14 @@ class ProfileDownloadScreen extends StatelessWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, ProfileCreateScreen.routeName);
+                  Navigator.pushNamed(context, PictureCreateScreen.routeName);
                 },
                 child: Text('프로필 사진 재생성하기'),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, ProfileDownloadScreen.routeName);
+                  Navigator.pushNamed(context, PictureDownloadScreen.routeName);
                 },
                 child: Text('프로필 사진 다운로드하기'),
               )

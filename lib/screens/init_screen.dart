@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puppicasso/screens/main/main_screen.dart';
 import 'package:puppicasso/screens/profile/profile_screen.dart';
-import 'package:puppicasso/screens/profile_create/profile_create_screen.dart';
-import 'package:puppicasso/screens/profile_download/profile_download_screen.dart';
+import 'package:puppicasso/screens/picture_create/picture_create_screen.dart';
+import 'package:puppicasso/screens/picture_download/picture_download_screen.dart';
 import 'package:puppicasso/constants.dart';
 
 const Color inActiveIconColor = Color(0xFFB6B6B6);
@@ -29,8 +29,8 @@ class _InitScreenState extends State<InitScreen> {
 
   final pages = [
     const MainScreen(),
-    const ProfileCreateScreen(),
-    const ProfileDownloadScreen(),
+    const PictureCreateScreen(),
+    const PictureDownloadScreen(),
     const ProfileScreen()
   ];
 
