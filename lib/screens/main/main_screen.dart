@@ -49,38 +49,104 @@ class MainScreen extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Column(
-                          children: [
+                        padding: EdgeInsets.only(left: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
                             SizedBox(height: 14),
-                            Text(
-                              "회원 등급",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  height: 1.8
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                    text: '회원 등급: ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '테스트',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             SizedBox(height: 12),
-                            Text(
-                              "사용 중인 이용권",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  height: 1.8
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                    text: '사용 중인 이용권: ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '테스트',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             SizedBox(height: 12),
-                            Text(
-                              "생성한 사진 수",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  height: 1.8
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                    text: '생성한 사진 수: ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '테스트',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             SizedBox(height: 12),
-                            Text(
-                              "남은 생성 횟수",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  height: 1.8
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children: const <TextSpan>[
+                                  TextSpan(
+                                    text: '남은 생성 횟수: ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '테스트',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      height: 1.8,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             SizedBox(height: 14),
@@ -89,6 +155,83 @@ class MainScreen extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "최근 생성한 사진",
+                            style: TextStyle(
+                                fontSize: 16,
+                                height: 1.8
+                            ),
+                          ),
+                          Text(
+                            "갤러리로 이동하기",
+                            style: TextStyle(
+                                fontSize: 16,
+                                height: 1.8
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ClipOval(
+                            child: Image.asset(
+                              "assets/images/splash_image1.webp",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ClipOval(
+                            child: Image.asset(
+                              "assets/images/splash_image2.webp",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ClipOval(
+                            child: Image.asset(
+                              "assets/images/splash_image3.webp",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ClipOval(
+                            child: Image.asset(
+                              "assets/images/splash_image1.webp",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          ClipOval(
+                            child: Image.asset(
+                              "assets/images/splash_image2.webp",
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
