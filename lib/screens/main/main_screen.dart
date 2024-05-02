@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:puppicasso/screens/sign_in/sign_in_screen.dart';
 
 class MainScreen extends StatelessWidget {
   static String routeName = "/main";

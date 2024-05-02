@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
-import 'package:puppicasso/screens/sign_in/sign_in_screen.dart';
-import 'package:puppicasso/screens/main/main_screen.dart';
 import 'package:puppicasso/screens/picture_download/picture_download_screen.dart';
 
 class PictureCreateScreen extends StatefulWidget {
@@ -16,84 +13,228 @@ class PictureCreateScreen extends StatefulWidget {
 }
 
 class _PictureCreateScreenState extends State<PictureCreateScreen> {
-  XFile? _image; // 선택한 이미지를 저장하는 변수
+  final ImagePicker _picker = ImagePicker();
+  List<File> _images = [];
 
-  Future getImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery); // 이미지 피커로부터 이미지 선택
+  Future<void> pickImage() async {
+    final pickedFiles = await _picker.pickMultiImage();
+    if (pickedFiles != null) {
+      setState(() {
+        _images = pickedFiles.map((file) => File(file.path)).toList();
+      });
+    }
+  }
 
+  void removeImage(int index) {
     setState(() {
-      _image = image;
+      _images.removeAt(index);
     });
   }
+
+  String? _selectedItem;
+  final List<String> _items = ['얼굴만 보이게', '전면', '후면', '측면'];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white70,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 50),
-              const Text(
-                "Puppicasso",
-                style: TextStyle(
-                  fontSize: 32,
-                  color: Colors.blueAccent,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                "Puppicasso, 내 반려견만을 위한 AI 프로필",
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              Container(
-                width: 250.0, // 컨테이너의 너비 설정
-                height: 250.0, // 컨테이너의 높이 설정
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, // 컨테이너를 원형으로 만듦
-                  color: Colors.grey[200], // 기본 배경색 설정
-                ),
-                child: _image == null
-                    ? const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.photo, size: 50.0, color: Colors.grey), // 기본 아이콘
-                      Text('이미지를 선택해주세요.', textAlign: TextAlign.center),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          RichText(
+                            textAlign: TextAlign.justify,
+                            text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: const <InlineSpan>[
+                                TextSpan(
+                                  text: '선택한 사진',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    height: 1.8,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                WidgetSpan(
+                                  child: SizedBox(width: 8), // 원하는 간격 크기로 설정
+                                ),
+                                TextSpan(
+                                  text: '8/10',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    height: 1.8,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: 80,
+                        child: _images.isEmpty
+                            ? Center(
+                              child: Text(
+                                '사진을 선택해주세요.',
+                                style: TextStyle(fontSize: 16, color: Colors.grey),
+                              ),
+                            )
+                            : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _images.length,
+                            itemBuilder: (context, index) {
+                              return Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: Image.file(
+                                        _images[index],
+                                        width: 80,
+                                        height: 80,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 0,
+                                    right: 0,
+                                    child: InkWell(
+                                      onTap: () => removeImage(index),
+                                      child: Icon(Icons.close, color: Colors.red, size: 24),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: pickImage,
+                        child: Text("사진 선택하기"),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "스튜디오 컨셉",
+                            style: TextStyle(
+                                fontSize: 16,
+                                height: 1.8
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButton<String>(
+                        value: _selectedItem,
+                        hint: Text('선택해주세요'),
+                        items: _items.map((String item) {
+                          return DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(item),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedItem = newValue;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "분위기",
+                            style: TextStyle(
+                                fontSize: 16,
+                                height: 1.8
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButton<String>(
+                        value: _selectedItem,
+                        hint: Text('선택해주세요'),
+                        items: _items.map((String item) {
+                          return DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(item),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedItem = newValue;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "사진 구도",
+                            style: TextStyle(
+                                fontSize: 16,
+                                height: 1.8
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButton<String>(
+                        value: _selectedItem,
+                        hint: Text('선택해주세요'),
+                        items: _items.map((String item) {
+                          return DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(item),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedItem = newValue;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.pink.shade300),
+                        ),
+                        onPressed: () {
+                          // TODO: 생성하기 버튼이 클릭되었을 때 수행할 작업
+                          Navigator.pushNamed(context, PictureDownloadScreen.routeName);
+                        },
+                        child: Text("AI 사진 생성하기"),
+                      )
                     ],
-                ) : ClipOval(
-                  child: Image.file(
-                    File(_image!.path),
-                    fit: BoxFit.cover, // 이미지가 컨테이너를 꽉 채우도록 조정
-                    width: 250.0, // 이미지의 너비 설정
-                    height: 250.0, // 이미지의 높이 설정
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: getImage,
-                child: Text('사진 선택하기'),
-              ),
-              const SizedBox(height: 16),
-              // TODO: 이미지 설정 옵션 추가
-              ElevatedButton(
-                onPressed: () {
-                  // TODO: 생성하기 버튼이 클릭되었을 때 수행할 작업
-                  Navigator.pushNamed(context, PictureDownloadScreen.routeName);
-                },
-                child: Text('프로필 사진 생성하기'),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
+        )
       ),
     );
   }
