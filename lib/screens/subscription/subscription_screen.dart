@@ -13,7 +13,11 @@ class SubscriptionScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(
+            children: [
+              Row(
 
+              ),
+            ]
           ),
         ),
       ),
