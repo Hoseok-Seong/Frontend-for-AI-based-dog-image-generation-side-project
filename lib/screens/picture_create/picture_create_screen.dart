@@ -64,7 +64,6 @@ class _PictureCreateScreenState extends State<PictureCreateScreen> {
                                   style: TextStyle(
                                     fontSize: 16,
                                     height: 1.8,
-                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 WidgetSpan(
