@@ -209,7 +209,7 @@ class MainScreen extends StatelessWidget {
                   padding: EdgeInsets.all(10),
                   child: Column(
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -219,13 +219,18 @@ class MainScreen extends StatelessWidget {
                                 height: 1.8
                             ),
                           ),
-                          Text(
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/gallery");
+                            },
+                            child: const Text(
                             "갤러리로 이동하기",
                             style: TextStyle(
                                 fontSize: 16,
                                 height: 1.8
+                              ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                       const SizedBox(height: 10),
