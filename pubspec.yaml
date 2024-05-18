@@ -32,31 +32,52 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # ios style icon
+  # iOS 스타일 아이콘
   cupertino_icons: ^1.0.2
-  # icon
+
+  # 아이콘
   flutter_svg: ^2.0.9
+
   # 이미지 피커
   image_picker: ^1.0.7
-  # http 통신
+
+  # HTTP 통신
   dio: ^5.4.2+1
-  # 상태관리
+
+  # 상태 관리
   flutter_riverpod: ^2.4.10
   riverpod_annotation: ^2.3.4
-  # json 직렬화
-  json_serializable: ^6.7.1
-  # 불변객체
+
+  # JSON 직렬화 어노테이션
+  json_annotation: ^4.9.0
+
+  # 불변 객체
   freezed: ^2.5.1
+
   # 스플래시 스크린
   flutter_native_splash: ^2.2.19
+
+  # 모바일 저장소
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner:
+
+  # 코드 생성 도구
+  build_runner: ^2.4.9
+
+  # 커스텀 린트 도구
   custom_lint:
+
+  # Riverpod 코드 생성 도구
   riverpod_generator: ^2.3.11
+
+  # Riverpod 린트 도구
   riverpod_lint: ^2.3.9
+
+  # JSON 직렬화 코드 생성 도구
+  json_serializable: ^6.7.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

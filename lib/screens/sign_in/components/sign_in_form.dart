@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puppicasso/models/user_login_req.dart';
+import 'package:puppicasso/providers/login_provider.dart';
 import 'package:puppicasso/screens/forgot_password/forgot_password_screen.dart';
 import 'package:puppicasso/screens/init_screen.dart';
-import 'package:dio/dio.dart';
 
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
 import '../../../constants.dart';
 import '../../../helper/keyboard.dart';
 
-class SignForm extends StatefulWidget {
+class SignForm extends ConsumerStatefulWidget {
   const SignForm({super.key});
 
   @override
   _SignFormState createState() => _SignFormState();
 }
 
-class _SignFormState extends State<SignForm> {
+class _SignFormState extends ConsumerState<SignForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
@@ -38,38 +40,10 @@ class _SignFormState extends State<SignForm> {
     }
   }
 
-  Future<bool> login(String? username, String? password) async {
-    Dio dio = Dio();
-
-    final String apiUrl = "http://192.168.84.233:8080/login";
-    final Map<String, dynamic> loginData = {
-      "username": username,
-      "password": password
-    };
-
-    try {
-      // POST 요청을 보냅니다.
-      // Response response = await dio.post(apiUrl, data: loginData);
-      //
-      // if (response.statusCode == 200) {
-      //   // 로그인 성공 처리
-      //   print("로그인 성공: ${response.data}");
-      //   return true;
-      // } else {
-      //   // 서버 오류 처리
-      //   print("서버 오류: ${response.statusCode}");
-      //   return false;
-      // }
-      return true;
-    } on DioException catch (e) {
-      // Dio 오류 처리 (요청 실패, 타임아웃 등)
-      print("Dio 오류: ${e.message}");
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final loginService = ref.read(loginProvider);
+
     return Form(
       key: _formKey,
       child: Column(
@@ -98,8 +72,6 @@ class _SignFormState extends State<SignForm> {
             decoration: const InputDecoration(
               labelText: "Email",
               hintText: "이메일을 입력해요",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
@@ -129,8 +101,6 @@ class _SignFormState extends State<SignForm> {
             decoration: const InputDecoration(
               labelText: "Password",
               hintText: "비밀번호를 입력해요",
-              // If  you are using latest version of flutter then lable text and hint text shown like this
-              // if you r using flutter less then 1.20.* then maybe this is not working properly
               floatingLabelBehavior: FloatingLabelBehavior.always,
               suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Lock.svg"),
             ),
@@ -165,19 +135,19 @@ class _SignFormState extends State<SignForm> {
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
-                // if all are valid then go to success screen
+
                 KeyboardUtil.hideKeyboard(context);
 
-                // login 함수 호출, 여기서 username과 password는 로그인에 필요한 사용자 입력값입니다.
-                bool loginSuccess = await login(email, password);
+                bool loginSuccess = await loginService.login(UserLoginReq(
+                  username: email!,
+                  password: password!,
+                ));
 
-                // 로그인 성공 시 다음 화면으로 이동
                 if (loginSuccess) {
                   Navigator.pushNamed(context, InitScreen.routeName);
                 } else {
-                  // 로그인 실패 시 사용자에게 알림, 예를 들면 Snackbar 사용
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("존재하지 않는 아이디입니다")),
+                    const SnackBar(content: Text("로그인이 실패하였습니다")),
                   );
                 }
               }
