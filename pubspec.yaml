@@ -104,7 +104,11 @@ flutter:
     - assets/images/
     - assets/icons/
 
+#  fonts:
+#    - family: Wavve
+#      fonts:
+#        - asset: assets/fonts/waave/WavvePADO-Regular.ttf
   fonts:
-    - family: Wavve
+    - family: Gmarket
       fonts:
-        - asset: assets/fonts/waave/WavvePADO-Regular.ttf
+        - asset: assets/fonts/GmarketSansTTF/GmarketSansTTFLight.ttf
