@@ -9,7 +9,7 @@ class LoginService {
   final Dio _dio = Dio();
 
   Future<bool> login(UserLoginReq userLoginReq) async {
-    final String apiUrl = "http://192.168.200.103:8080/login";
+    final String apiUrl = "http://192.168.200.100:8080/login";
 
     try {
       Response response = await _dio.post(apiUrl, data: userLoginReq.toJson());
