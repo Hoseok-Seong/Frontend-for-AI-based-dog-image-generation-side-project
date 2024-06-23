@@ -23,6 +23,15 @@ class InitScreen extends ConsumerStatefulWidget  {
 class _InitScreenState extends ConsumerState<InitScreen> {
   int currentSelectedIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    // 초기 로드 시 첫 번째 탭에 대한 데이터를 Fetch
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(mainViewModelProvider.notifier).fetchData();
+    });
+  }
+
   void updateCurrentIndex(int index) {
     setState(() {
       currentSelectedIndex = index;

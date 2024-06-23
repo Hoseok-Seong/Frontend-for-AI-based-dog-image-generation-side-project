@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puppicasso/viewmodels/main_view_model.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 
 class MainScreen extends ConsumerWidget {
   static String routeName = "/api/main";
@@ -215,51 +217,75 @@ class MainScreen extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Row(
+                          data.fileData.isEmpty
+                              ? const Center(
+                                child: Text(
+                                  "아직 생성한 사진이 없습니다.",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              )
+                              : Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ClipOval(
-                                child: Image.asset(
-                                  "assets/images/splash_image1.webp",
+                            children: data.fileData.map((base64Image) {
+                              Uint8List imageBytes = base64Decode(base64Image);
+                              return ClipOval(
+                                child: Image.memory(
+                                  imageBytes,
                                   width: 50,
                                   height: 50,
                                   fit: BoxFit.cover,
                                 ),
-                              ),
-                              ClipOval(
-                                child: Image.asset(
-                                  "assets/images/splash_image2.webp",
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              ClipOval(
-                                child: Image.asset(
-                                  "assets/images/splash_image3.webp",
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              ClipOval(
-                                child: Image.asset(
-                                  "assets/images/splash_image1.webp",
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              ClipOval(
-                                child: Image.asset(
-                                  "assets/images/splash_image2.webp",
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ],
+                              );
+                            }).toList(),
                           ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     ClipOval(
+                          //       child: Image.asset(
+                          //         "assets/images/splash_image1.webp",
+                          //         width: 50,
+                          //         height: 50,
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          //     ),
+                          //     ClipOval(
+                          //       child: Image.asset(
+                          //         "assets/images/splash_image2.webp",
+                          //         width: 50,
+                          //         height: 50,
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          //     ),
+                          //     ClipOval(
+                          //       child: Image.asset(
+                          //         "assets/images/splash_image3.webp",
+                          //         width: 50,
+                          //         height: 50,
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          //     ),
+                          //     ClipOval(
+                          //       child: Image.asset(
+                          //         "assets/images/splash_image1.webp",
+                          //         width: 50,
+                          //         height: 50,
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          //     ),
+                          //     ClipOval(
+                          //       child: Image.asset(
+                          //         "assets/images/splash_image2.webp",
+                          //         width: 50,
+                          //         height: 50,
+                          //         fit: BoxFit.cover,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                     ),
