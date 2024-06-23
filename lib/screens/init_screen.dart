@@ -1,30 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:puppicasso/screens/gallery/gallery_screen.dart';
 import 'package:puppicasso/screens/main/main_screen.dart';
 import 'package:puppicasso/screens/profile/profile_screen.dart';
 import 'package:puppicasso/screens/picture_create/picture_create_screen.dart';
 import 'package:puppicasso/constants.dart';
+import 'package:puppicasso/viewmodels/main_view_model.dart';
 
 const Color inActiveIconColor = Color(0xFFB6B6B6);
 const Color kSecondaryColor = Color(0xFF979797);
 
-class InitScreen extends StatefulWidget {
+class InitScreen extends ConsumerStatefulWidget  {
   const InitScreen({super.key});
 
   static String routeName = "/";
 
   @override
-  State<InitScreen> createState() => _InitScreenState();
+  _InitScreenState createState() => _InitScreenState();
 }
 
-class _InitScreenState extends State<InitScreen> {
+class _InitScreenState extends ConsumerState<InitScreen> {
   int currentSelectedIndex = 0;
 
   void updateCurrentIndex(int index) {
     setState(() {
       currentSelectedIndex = index;
     });
+
+    switch (index) {
+      case 0:
+        ref.read(mainViewModelProvider.notifier).fetchData();
+        break;
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+    }
   }
 
   final pages = [
@@ -56,7 +70,10 @@ class _InitScreenState extends State<InitScreen> {
           )
         ],
       ),
-      body: pages[currentSelectedIndex],
+      body: IndexedStack(
+        index: currentSelectedIndex,
+        children: pages,
+      ),
       backgroundColor: kSecondaryColor,
       bottomNavigationBar: BottomNavigationBar(
         onTap: updateCurrentIndex,
