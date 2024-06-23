@@ -31,23 +31,23 @@ class SignUpScreen extends StatelessWidget {
                   const SizedBox(height: 28),
                   const SignUpForm(),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleContainer(
-                        icon: "assets/icons/google.svg",
-                        press: () {},
-                      ),
-                      CircleContainer(
-                        icon: "assets/icons/kakao.svg",
-                        press: () {},
-                      ),
-                      CircleContainer(
-                        icon: "assets/icons/naver.svg",
-                        press: () {},
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     CircleContainer(
+                  //       icon: "assets/icons/google.svg",
+                  //       press: () {},
+                  //     ),
+                  //     CircleContainer(
+                  //       icon: "assets/icons/kakao.svg",
+                  //       press: () {},
+                  //     ),
+                  //     CircleContainer(
+                  //       icon: "assets/icons/naver.svg",
+                  //       press: () {},
+                  //     ),
+                  //   ],
+                  // ),
                   const SizedBox(height: 16),
                   Text(
                     'By continuing your confirm that you agree \nwith our Term and Condition',

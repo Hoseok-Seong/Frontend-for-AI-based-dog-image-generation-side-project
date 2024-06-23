@@ -50,11 +50,11 @@ dependencies:
   flutter_riverpod: ^2.4.10
   riverpod_annotation: ^2.3.4
 
-  # JSON 직렬화 어노테이션
-  json_annotation: ^4.9.0
-
-  # 불변 객체
-  freezed: ^2.3.4
+#  # JSON 직렬화 어노테이션
+#  json_annotation: ^4.9.0
+#
+#  # 불변 객체
+#  freezed: ^2.3.4
 
   # 스플래시 스크린
   flutter_native_splash: ^2.2.19
@@ -68,20 +68,20 @@ dev_dependencies:
 
   analyzer: ^6.2.0
 
-  # 코드 생성 도구
-  build_runner: ^2.3.3
-
-  # 커스텀 린트 도구
-  custom_lint:
-
-  # Riverpod 코드 생성 도구
-  riverpod_generator: ^2.3.11
-
-  # Riverpod 린트 도구
-  riverpod_lint: ^2.3.9
-
-  # JSON 직렬화 코드 생성 도구
-  json_serializable: ^6.6.0
+#  # 코드 생성 도구
+#  build_runner: ^2.3.3
+#
+#  # 커스텀 린트 도구
+#  custom_lint:
+#
+#  # Riverpod 코드 생성 도구
+#  riverpod_generator: ^2.3.11
+#
+#  # Riverpod 린트 도구
+#  riverpod_lint: ^2.3.9
+#
+#  # JSON 직렬화 코드 생성 도구
+#  json_serializable: ^6.6.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

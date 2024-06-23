@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puppicasso/APIs/join_api.dart';
 import 'package:puppicasso/components/custom_surfix_icon.dart';
 import 'package:puppicasso/components/form_error.dart';
 import 'package:puppicasso/constants.dart';
 import 'package:puppicasso/models/user_join_req.dart';
-import 'package:puppicasso/providers/join_provider.dart';
 import 'package:puppicasso/screens/sign_up_success/sign_up_success_screen.dart';
 
 class SignUpForm extends ConsumerStatefulWidget {
@@ -22,6 +22,8 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
   bool remember = false;
 
   final List<String?> errors = [];
+
+  final JoinAPI joinAPI = JoinAPI();
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -41,8 +43,6 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    final joinService = ref.read(joinProvider);
-
     return Form(
       key: _formKey,
       child: Column(
@@ -140,16 +140,22 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
 
-                bool joinSuccess = await joinService.join(UserJoinReq(
-                  username: email!,
-                  password: password!,
-                ));
+                try {
+                  bool joinSuccess = await joinAPI.join(UserJoinReq(
+                    username: email!,
+                    password: password!,
+                  ));
 
-                if (joinSuccess) {
-                  Navigator.pushNamed(context, SignUpSuccessScreen.routeName);
-                } else {
+                  if (joinSuccess) {
+                    Navigator.pushNamed(context, SignUpSuccessScreen.routeName);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("회원가입이 실패하였습니다")),
+                    );
+                  }
+                } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("회원가입에 실패하였습니다")),
+                    SnackBar(content: Text(e.toString())),
                   );
                 }
               }

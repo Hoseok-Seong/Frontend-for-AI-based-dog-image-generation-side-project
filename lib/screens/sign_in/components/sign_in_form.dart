@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puppicasso/APIs/login_api.dart';
 import 'package:puppicasso/models/user_login_req.dart';
-import 'package:puppicasso/providers/login_provider.dart';
 import 'package:puppicasso/screens/forgot_password/forgot_password_screen.dart';
 import 'package:puppicasso/screens/init_screen.dart';
 
@@ -24,6 +24,8 @@ class _SignFormState extends ConsumerState<SignForm> {
   bool? remember = false;
   final List<String?> errors = [];
 
+  final LoginAPI loginAPI = LoginAPI();
+
   void addError({String? error}) {
     if (!errors.contains(error)) {
       setState(() {
@@ -42,8 +44,6 @@ class _SignFormState extends ConsumerState<SignForm> {
 
   @override
   Widget build(BuildContext context) {
-    final loginService = ref.read(loginProvider);
-
     return Form(
       key: _formKey,
       child: Column(
@@ -138,16 +138,22 @@ class _SignFormState extends ConsumerState<SignForm> {
 
                 KeyboardUtil.hideKeyboard(context);
 
-                bool loginSuccess = await loginService.login(UserLoginReq(
-                  username: email!,
-                  password: password!,
-                ));
+                try {
+                  bool loginSuccess = await loginAPI.login(UserLoginReq(
+                    username: email!,
+                    password: password!,
+                  ));
 
-                if (loginSuccess) {
-                  Navigator.pushNamed(context, InitScreen.routeName);
-                } else {
+                  if (loginSuccess) {
+                    Navigator.pushNamed(context, InitScreen.routeName);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("로그인이 실패하였습니다")),
+                    );
+                  }
+                } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("로그인이 실패하였습니다")),
+                    SnackBar(content: Text(e.toString())),
                   );
                 }
               }
