@@ -7,6 +7,7 @@ import 'package:puppicasso/screens/profile/profile_screen.dart';
 import 'package:puppicasso/screens/picture_create/picture_create_screen.dart';
 import 'package:puppicasso/constants.dart';
 import 'package:puppicasso/viewmodels/main_view_model.dart';
+import 'package:puppicasso/viewmodels/picture_create_view_model.dart';
 
 const Color inActiveIconColor = Color(0xFFB6B6B6);
 const Color kSecondaryColor = Color(0xFF979797);
@@ -42,6 +43,7 @@ class _InitScreenState extends ConsumerState<InitScreen> {
         ref.read(mainViewModelProvider.notifier).fetchData();
         break;
       case 1:
+        ref.read(pictureCreateViewModelProvider.notifier).fetchData();
         break;
       case 2:
         break;

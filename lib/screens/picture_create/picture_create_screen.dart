@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:puppicasso/screens/picture_download/picture_download_screen.dart';
+import 'package:puppicasso/viewmodels/picture_create_view_model.dart';
+import 'package:puppicasso/models/picture_create_resp.dart';
 
-class PictureCreateScreen extends StatefulWidget {
+class PictureCreateScreen extends ConsumerStatefulWidget {
   static String routeName = "/picture_create";
 
   const PictureCreateScreen({super.key});
@@ -12,7 +15,7 @@ class PictureCreateScreen extends StatefulWidget {
   _PictureCreateScreenState createState() => _PictureCreateScreenState();
 }
 
-class _PictureCreateScreenState extends State<PictureCreateScreen> {
+class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
   final ImagePicker _picker = ImagePicker();
   List<File> _images = [];
 
@@ -31,11 +34,60 @@ class _PictureCreateScreenState extends State<PictureCreateScreen> {
     });
   }
 
-  String? _selectedItem;
-  final List<String> _items = ['얼굴만 보이게', '전면', '후면', '측면'];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(pictureCreateViewModelProvider.notifier).fetchData();
+    });
+  }
+
+  String? _selectedBreed;
+  String? _selectedSize;
+  String? _selectedCoatLength;
+  String? _selectedFurTexture;
+  String? _selectedEyeColor;
+  String? _selectedEarShape;
+  String? _selectedNoseShape;
+  String? _selectedFaceShape;
+  String? _selectedTailShape;
+  String? _selectedExpression;
+  String? _selectedPose;
+  String? _selectedCoatColor;
+
+  Widget buildDropdown(String label, List<Attribute> items, String? selectedItem, ValueChanged<String?> onChanged) {
+    return DropdownButtonFormField<String>(
+      decoration: InputDecoration(labelText: label),
+      value: selectedItem,
+      items: items.map((attribute) {
+        return DropdownMenuItem<String>(
+          value: attribute.value,
+          child: Center(child: Text(attribute.name)),
+        );
+      }).toList(),
+      onChanged: onChanged,
+      isExpanded: true, // Dropdown을 더 넓게 만들어줍니다.
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(pictureCreateViewModelProvider);
+
+    if (state.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    if (state.errorMessage != null) {
+      return Center(child: Text('Error: ${state.errorMessage}'));
+    }
+
+    final attributes = state.data;
+
+    if (attributes == null) {
+      return Center(child: Text('No data available'));
+    }
+
     return Scaffold(
       backgroundColor: Colors.white70,
       body: SafeArea(
@@ -70,7 +122,7 @@ class _PictureCreateScreenState extends State<PictureCreateScreen> {
                                   child: SizedBox(width: 8), // 원하는 간격 크기로 설정
                                 ),
                                 TextSpan(
-                                  text: '8/10',
+                                  text: '0/1',
                                   style: TextStyle(
                                     fontSize: 16,
                                     height: 1.8,
@@ -87,41 +139,41 @@ class _PictureCreateScreenState extends State<PictureCreateScreen> {
                         height: 80,
                         child: _images.isEmpty
                             ? Center(
-                              child: Text(
-                                '사진을 선택해주세요.',
-                                style: TextStyle(fontSize: 16, color: Colors.grey),
-                              ),
-                            )
+                          child: Text(
+                            '사진을 선택해주세요.',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        )
                             : ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _images.length,
-                            itemBuilder: (context, index) {
-                              return Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.file(
-                                        _images[index],
-                                        width: 80,
-                                        height: 80,
-                                        fit: BoxFit.cover,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _images.length,
+                              itemBuilder: (context, index) {
+                                return Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8.0),
+                                        child: Image.file(
+                                          _images[index],
+                                          width: 80,
+                                          height: 80,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: InkWell(
-                                      onTap: () => removeImage(index),
-                                      child: Icon(Icons.close, color: Colors.red, size: 24),
+                                    Positioned(
+                                      top: 0,
+                                      right: 0,
+                                      child: InkWell(
+                                        onTap: () => removeImage(index),
+                                        child: Icon(Icons.close, color: Colors.red, size: 24),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            },
+                                  ],
+                                );
+                              },
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -130,92 +182,77 @@ class _PictureCreateScreenState extends State<PictureCreateScreen> {
                         child: Text("사진 선택하기"),
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "스튜디오 컨셉",
-                            style: TextStyle(
-                                fontSize: 16,
-                                height: 1.8
-                            ),
-                          ),
-                        ],
-                      ),
+                      buildDropdown('견종', attributes.breeds, _selectedBreed, (value) {
+                        setState(() {
+                          _selectedBreed = value;
+                        });
+                      }),
                       const SizedBox(height: 10),
-                      DropdownButton<String>(
-                        value: _selectedItem,
-                        hint: Text('선택해주세요'),
-                        items: _items.map((String item) {
-                          return DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedItem = newValue;
-                          });
-                        },
-                      ),
+                      buildDropdown('크기', attributes.sizes, _selectedSize, (value) {
+                        setState(() {
+                          _selectedSize = value;
+                        });
+                      }),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "분위기",
-                            style: TextStyle(
-                                fontSize: 16,
-                                height: 1.8
-                            ),
-                          ),
-                        ],
-                      ),
+                      buildDropdown('털 길이', attributes.coatLengths, _selectedCoatLength, (value) {
+                        setState(() {
+                          _selectedCoatLength = value;
+                        });
+                      }),
                       const SizedBox(height: 10),
-                      DropdownButton<String>(
-                        value: _selectedItem,
-                        hint: Text('선택해주세요'),
-                        items: _items.map((String item) {
-                          return DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedItem = newValue;
-                          });
-                        },
-                      ),
+                      buildDropdown('털 텍스처', attributes.furTextures, _selectedFurTexture, (value) {
+                        setState(() {
+                          _selectedFurTexture = value;
+                        });
+                      }),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            "사진 구도",
-                            style: TextStyle(
-                                fontSize: 16,
-                                height: 1.8
-                            ),
-                          ),
-                        ],
-                      ),
+                      buildDropdown('눈 색깔', attributes.eyeColors, _selectedEyeColor, (value) {
+                        setState(() {
+                          _selectedEyeColor = value;
+                        });
+                      }),
                       const SizedBox(height: 10),
-                      DropdownButton<String>(
-                        value: _selectedItem,
-                        hint: Text('선택해주세요'),
-                        items: _items.map((String item) {
-                          return DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedItem = newValue;
-                          });
-                        },
-                      ),
+                      buildDropdown('귀 모양', attributes.earShapes, _selectedEarShape, (value) {
+                        setState(() {
+                          _selectedEarShape = value;
+                        });
+                      }),
+                      const SizedBox(height: 10),
+                      buildDropdown('코 모양', attributes.noseShapes, _selectedNoseShape, (value) {
+                        setState(() {
+                          _selectedNoseShape = value;
+                        });
+                      }),
+                      const SizedBox(height: 10),
+                      buildDropdown('얼굴 모양', attributes.faceShapes, _selectedFaceShape, (value) {
+                        setState(() {
+                          _selectedFaceShape = value;
+                        });
+                      }),
+                      const SizedBox(height: 10),
+                      buildDropdown('꼬리 모양', attributes.tailShapes, _selectedTailShape, (value) {
+                        setState(() {
+                          _selectedTailShape = value;
+                        });
+                      }),
+                      const SizedBox(height: 10),
+                      buildDropdown('표정', attributes.expressions, _selectedExpression, (value) {
+                        setState(() {
+                          _selectedExpression = value;
+                        });
+                      }),
+                      const SizedBox(height: 10),
+                      buildDropdown('자세', attributes.poses, _selectedPose, (value) {
+                        setState(() {
+                          _selectedPose = value;
+                        });
+                      }),
+                      const SizedBox(height: 10),
+                      buildDropdown('털 색깔', attributes.coatColors, _selectedCoatColor, (value) {
+                        setState(() {
+                          _selectedCoatColor = value;
+                        });
+                      }),
                       const SizedBox(height: 10),
                       ElevatedButton(
                         style: ButtonStyle(
@@ -233,7 +270,7 @@ class _PictureCreateScreenState extends State<PictureCreateScreen> {
               ],
             ),
           ),
-        )
+        ),
       ),
     );
   }
