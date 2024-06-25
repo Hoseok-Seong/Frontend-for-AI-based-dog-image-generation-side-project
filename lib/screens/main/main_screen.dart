@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puppicasso/screens/init_screen.dart';
 import 'package:puppicasso/viewmodels/main_view_model.dart';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -48,7 +49,7 @@ class MainScreen extends ConsumerWidget {
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/picture_create");
+                          ref.read(tabIndexProvider.notifier).updateIndex(1, ref);
                         },
                         child: Text("지금 바로 사진 생성하기"),
                       ),
@@ -204,7 +205,7 @@ class MainScreen extends ConsumerWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(context, "/gallery");
+                                  ref.read(tabIndexProvider.notifier).updateIndex(2, ref);
                                 },
                                 child: const Text(
                                   "갤러리로 이동하기",

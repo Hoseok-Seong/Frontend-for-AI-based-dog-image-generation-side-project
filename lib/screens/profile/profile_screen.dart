@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:puppicasso/services/logout_service.dart';
 
 import 'components/profile_menu.dart';
 import 'components/profile_pic.dart';
@@ -7,7 +8,9 @@ import 'components/profile_pic.dart';
 class ProfileScreen extends StatelessWidget {
   static String routeName = "/profile";
 
-  const ProfileScreen({super.key});
+  final LogoutService _logoutService = LogoutService();
+
+  ProfileScreen({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +60,9 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 Spacer(),
                                 IconButton(
-                                  onPressed: (){},
+                                  onPressed: () async {
+                                    await _logoutService.logout(context);
+                                  },
                                   icon: SvgPicture.asset(
                                     "assets/icons/log-out-1-svgrepo-com.svg",
                                     width: 30,

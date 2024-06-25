@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:puppicasso/screens/forgot_password/forgot_password_screen.dart';
+import 'package:puppicasso/screens/gallery/gallery_screen.dart';
 import 'package:puppicasso/screens/init_screen.dart';
 import 'package:puppicasso/screens/main/main_screen.dart';
 import 'package:puppicasso/screens/picture_create/picture_create_screen.dart';
@@ -18,5 +19,6 @@ final Map<String, WidgetBuilder> routes = {
   ForgotPasswordScreen.routeName: (context) => const ForgotPasswordScreen(),
   MainScreen.routeName: (context) => const MainScreen(),
   PictureCreateScreen.routeName: (context) => const PictureCreateScreen(),
-  PictureDownloadScreen.routeName: (context) => const PictureDownloadScreen()
+  PictureDownloadScreen.routeName: (context) => const PictureDownloadScreen(),
+  GalleryScreen.routeName: (context) => const GalleryScreen()
 };

@@ -139,22 +139,30 @@ class _SignFormState extends ConsumerState<SignForm> {
 
                 KeyboardUtil.hideKeyboard(context);
 
+                bool loginSuccess = false;
+
                 try {
-                  bool loginSuccess = await loginAPI.login(UserLoginReq(
+                  loginSuccess = await loginAPI.login(UserLoginReq(
                     username: email!,
                     password: password!,
                   ));
-
-                  if (loginSuccess) {
-                    Navigator.pushNamed(context, InitScreen.routeName);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("로그인이 실패하였습니다")),
-                    );
-                  }
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(e.toString())),
+                  );
+                }
+
+                if (loginSuccess) {
+                  if (!mounted) return;
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => InitScreen(),
+                    ), (Route<dynamic> route) => false,
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("로그인이 실패하였습니다")),
                   );
                 }
               }
