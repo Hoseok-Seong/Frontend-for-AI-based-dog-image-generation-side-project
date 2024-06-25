@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:puppicasso/screens/picture_download/picture_download_screen.dart';
+import 'package:puppicasso/apis/ai_image_api.dart';
+import 'package:puppicasso/models/ai_image_req.dart';
+import 'package:puppicasso/models/ai_image_resp.dart';
 import 'package:puppicasso/viewmodels/picture_create_view_model.dart';
 import 'package:puppicasso/models/picture_create_resp.dart';
 
@@ -17,20 +19,20 @@ class PictureCreateScreen extends ConsumerStatefulWidget {
 
 class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
   final ImagePicker _picker = ImagePicker();
-  List<File> _images = [];
+  File? _image;
 
   Future<void> pickImage() async {
-    final pickedFiles = await _picker.pickMultiImage();
-    if (pickedFiles != null) {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
       setState(() {
-        _images = pickedFiles.map((file) => File(file.path)).toList();
+        _image = File(pickedFile.path);
       });
     }
   }
 
-  void removeImage(int index) {
+  void removeImage() {
     setState(() {
-      _images.removeAt(index);
+      _image = null;
     });
   }
 
@@ -57,7 +59,24 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
 
   Widget buildDropdown(String label, List<Attribute> items, String? selectedItem, ValueChanged<String?> onChanged) {
     return DropdownButtonFormField<String>(
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.black, fontSize: 16),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.black, width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.black, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.black, width: 2),
+        ),
+      ),
       value: selectedItem,
       items: items.map((attribute) {
         return DropdownMenuItem<String>(
@@ -66,7 +85,10 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
         );
       }).toList(),
       onChanged: onChanged,
-      isExpanded: true, // Dropdown을 더 넓게 만들어줍니다.
+      isExpanded: true,
+      style: TextStyle(color: Colors.black),
+      iconEnabledColor: Colors.blueAccent,
+      dropdownColor: Colors.white,
     );
   }
 
@@ -110,7 +132,7 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                             textAlign: TextAlign.justify,
                             text: TextSpan(
                               style: DefaultTextStyle.of(context).style,
-                              children: const <InlineSpan>[
+                              children: <InlineSpan>[
                                 TextSpan(
                                   text: '선택한 사진',
                                   style: TextStyle(
@@ -122,7 +144,7 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                                   child: SizedBox(width: 8), // 원하는 간격 크기로 설정
                                 ),
                                 TextSpan(
-                                  text: '0/1',
+                                  text: _image == null ? '0/1' : '1/1',
                                   style: TextStyle(
                                     fontSize: 16,
                                     height: 1.8,
@@ -137,43 +159,37 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                       const SizedBox(height: 10),
                       SizedBox(
                         height: 80,
-                        child: _images.isEmpty
+                        child: _image == null
                             ? Center(
                           child: Text(
                             '사진을 선택해주세요.',
                             style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
                         )
-                            : ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _images.length,
-                              itemBuilder: (context, index) {
-                                return Stack(
-                                  alignment: Alignment.topRight,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(8.0),
-                                        child: Image.file(
-                                          _images[index],
-                                          width: 80,
-                                          height: 80,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: InkWell(
-                                        onTap: () => removeImage(index),
-                                        child: Icon(Icons.close, color: Colors.red, size: 24),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
+                            : Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(6.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.file(
+                                  _image!,
+                                  width: 80,
+                                  height: 80,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: InkWell(
+                                onTap: removeImage,
+                                child: Icon(Icons.close, color: Colors.red, size: 24),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -258,12 +274,89 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.pink.shade300),
                         ),
-                        onPressed: () {
-                          // TODO: 생성하기 버튼이 클릭되었을 때 수행할 작업
-                          Navigator.pushNamed(context, PictureDownloadScreen.routeName);
+                        onPressed: () async {
+                          if (_image == null || _selectedBreed == null || _selectedSize == null ||
+                              _selectedCoatLength == null || _selectedFurTexture == null ||
+                              _selectedEyeColor == null || _selectedEarShape == null ||
+                              _selectedNoseShape == null || _selectedFaceShape == null ||
+                              _selectedTailShape == null || _selectedExpression == null ||
+                              _selectedPose == null || _selectedCoatColor == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("모든 필드를 선택해주세요")),
+                            );
+                          } else {
+                            AIImageReq aiImageReq = AIImageReq(
+                              breed: _selectedBreed!,
+                              sizeDesc: _selectedSize!,
+                              coatLength: _selectedCoatLength!,
+                              coatColor: _selectedCoatColor!,
+                              furTexture: _selectedFurTexture!,
+                              eyeColor: _selectedEyeColor!,
+                              earShape: _selectedEarShape!,
+                              noseShape: _selectedNoseShape!,
+                              faceShape: _selectedFaceShape!,
+                              tailShape: _selectedTailShape!,
+                              expression: _selectedExpression!,
+                              pose: _selectedPose!,
+                            );
+
+                            try {
+                              AIImageResp response = await AIImageAPI().generateAIImage(_image!, aiImageReq);
+
+                              // 응답받은 imageUrl을 다이얼로그로 표시
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('AI 이미지 생성 성공'),
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.network(response.imageUrl),
+                                        Text('이미지 생성에 성공했습니다.'),
+                                      ],
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('닫기'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          // 다운로드 로직 추가
+                                        },
+                                        child: Text('다운로드'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            } catch (e) {
+                              // 오류 처리
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('오류'),
+                                    content: Text('AI 이미지 생성에 실패했습니다.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text('닫기'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          }
                         },
                         child: Text("AI 사진 생성하기"),
-                      )
+                      ),
                     ],
                   ),
                 ),

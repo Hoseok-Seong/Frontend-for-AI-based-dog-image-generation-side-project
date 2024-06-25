@@ -46,6 +46,25 @@ class InitScreen extends ConsumerStatefulWidget {
 }
 
 class _InitScreenState extends ConsumerState<InitScreen> {
+
+  void showCustomDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,7 +121,9 @@ class _InitScreenState extends ConsumerState<InitScreen> {
                 icon: SvgPicture.asset(
                   "assets/icons/notification-bell-on-svgrepo-com.svg",
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showCustomDialog(context, "알림", "아직 준비중인 서비스입니다.");
+                },
               ),
             )
           ],

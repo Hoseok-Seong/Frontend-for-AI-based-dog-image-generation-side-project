@@ -45,6 +45,7 @@ dependencies:
 
   # HTTP 통신
   dio: ^5.4.2+1
+  http_parser: ^4.0.0
 
   # 상태 관리
   flutter_riverpod: ^2.4.10
