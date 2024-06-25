@@ -1,24 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:puppicasso/api_constants.dart';
-import 'package:puppicasso/helper/logging_interceptor.dart';
+import 'package:puppicasso/interceptor/dio_interceptor.dart';
 import 'package:puppicasso/models/ai_image_req.dart';
 import 'package:puppicasso/models/ai_image_resp.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http_parser/http_parser.dart';
 
 class AIImageAPI {
-  final Dio _dio;
-
-  AIImageAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl)) {
-    _dio.interceptors.add(LoggingInterceptor());
-  }
+  final Dio _dio = DioInterceptor.dio;
 
   Future<AIImageResp> generateAIImage(File image, AIImageReq aiImageReq) async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('accessToken');
-
     FormData formData = FormData.fromMap({
       'image': await MultipartFile.fromFile(image.path),
       'details': MultipartFile.fromString(
@@ -32,7 +23,6 @@ class AIImageAPI {
       data: formData,
       options: Options(
         headers: {
-          'Authorization_Access': token,
           'Content-Type': 'multipart/form-data',
         },
       ),

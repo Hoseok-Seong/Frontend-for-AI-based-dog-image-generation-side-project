@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:puppicasso/helper/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoggingInterceptor extends Interceptor {
   @override
@@ -18,11 +19,15 @@ class LoggingInterceptor extends Interceptor {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  Future<void> onError(DioException err, ErrorInterceptorHandler handler) async {
     logger.info("ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}");
     logger.info("Error Message: ${err.message}");
     if (err.response != null) {
       logger.info("Error Response: ${err.response?.data}");
+    }
+    if (err.response?.statusCode == 500) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('accessToken');
     }
     super.onError(err, handler);
   }
