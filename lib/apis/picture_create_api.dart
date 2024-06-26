@@ -3,7 +3,11 @@ import 'package:puppicasso/interceptor/dio_interceptor.dart';
 import 'package:puppicasso/models/picture_create_resp.dart';
 
 class PictureCreateAPI {
-  final Dio _dio = DioInterceptor.dio;
+  late final Dio _dio;
+
+  PictureCreateAPI() {
+    _dio = DioInterceptor.getDio();
+  }
 
   Future<PictureCreateResp> fetchData() async {
     final response = await _dio.post(

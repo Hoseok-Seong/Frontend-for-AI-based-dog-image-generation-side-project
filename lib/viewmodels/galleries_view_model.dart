@@ -1,33 +1,33 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:puppicasso/apis/main_api.dart';
-import 'package:puppicasso/models/main_resp.dart';
+import 'package:puppicasso/apis/galleries_api.dart';
+import 'package:puppicasso/models/galleries_resp.dart';
 
 // API Provider
-final mainApiProvider = Provider((ref) => MainAPI());
+final galleriesApiProvider = Provider((ref) => GalleriesAPI());
 
 // ViewModel Provider
-final mainViewModelProvider = StateNotifierProvider<MainViewModel, MainState>((ref) {
-  final api = ref.read(mainApiProvider);
-  return MainViewModel(api);
+final galleriesViewModelProvider = StateNotifierProvider<GalleriesViewModel, GalleriesState>((ref) {
+  final api = ref.read(galleriesApiProvider);
+  return GalleriesViewModel(api);
 });
 
-class MainState {
-  final MainResp? data;
+class GalleriesState {
+  final GalleriesResp? data;
   final bool isLoading;
   final String? errorMessage;
 
-  MainState({
+  GalleriesState({
     this.data,
     this.isLoading = false,
     this.errorMessage,
   });
 
-  MainState copyWith({
-    MainResp? data,
+  GalleriesState copyWith({
+    GalleriesResp? data,
     bool? isLoading,
     String? errorMessage,
   }) {
-    return MainState(
+    return GalleriesState(
       data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -35,10 +35,10 @@ class MainState {
   }
 }
 
-class MainViewModel extends StateNotifier<MainState> {
-  final MainAPI api;
+class GalleriesViewModel extends StateNotifier<GalleriesState> {
+  final GalleriesAPI api;
 
-  MainViewModel(this.api) : super(MainState());
+  GalleriesViewModel(this.api) : super(GalleriesState());
 
   Future<void> fetchData() async {
     state = state.copyWith(isLoading: true);

@@ -7,7 +7,11 @@ import 'dart:io';
 import 'package:http_parser/http_parser.dart';
 
 class AIImageAPI {
-  final Dio _dio = DioInterceptor.dio;
+  late final Dio _dio;
+
+  AIImageAPI() {
+    _dio = DioInterceptor.getDio();
+  }
 
   Future<AIImageResp> generateAIImage(File image, AIImageReq aiImageReq) async {
     FormData formData = FormData.fromMap({
