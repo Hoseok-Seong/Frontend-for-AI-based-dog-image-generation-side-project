@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:puppicasso/APIs/login_api.dart';
-import 'package:puppicasso/apis/main_api.dart';
-import 'package:puppicasso/models/user_login_req.dart';
+import 'package:puppicasso/apis/sign_in_api.dart';
+import 'package:puppicasso/models/user_sign_in_req.dart';
 import 'package:puppicasso/screens/forgot_password/forgot_password_screen.dart';
 import 'package:puppicasso/screens/init_screen.dart';
 
@@ -25,7 +24,7 @@ class _SignFormState extends ConsumerState<SignForm> {
   bool? remember = false;
   final List<String?> errors = [];
 
-  final LoginAPI loginAPI = LoginAPI();
+  final SignInAPI signInAPI = SignInAPI();
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -139,10 +138,10 @@ class _SignFormState extends ConsumerState<SignForm> {
 
                 KeyboardUtil.hideKeyboard(context);
 
-                bool loginSuccess = false;
+                bool signInSuccess = false;
 
                 try {
-                  loginSuccess = await loginAPI.login(UserLoginReq(
+                  signInSuccess = await signInAPI.signIn(UserSignInReq(
                     username: email!,
                     password: password!,
                   ));
@@ -152,7 +151,7 @@ class _SignFormState extends ConsumerState<SignForm> {
                   );
                 }
 
-                if (loginSuccess) {
+                if (signInSuccess) {
                   if (!mounted) return;
                   Navigator.pushAndRemoveUntil(
                     context,

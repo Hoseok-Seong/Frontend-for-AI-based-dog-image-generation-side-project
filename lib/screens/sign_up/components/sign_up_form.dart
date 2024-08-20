@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:puppicasso/APIs/join_api.dart';
+import 'package:puppicasso/apis/sign_up_api.dart';
 import 'package:puppicasso/components/custom_surfix_icon.dart';
 import 'package:puppicasso/components/form_error.dart';
 import 'package:puppicasso/constants.dart';
-import 'package:puppicasso/models/user_join_req.dart';
+import 'package:puppicasso/models/user_sign_up_req.dart';
 import 'package:puppicasso/screens/sign_up_success/sign_up_success_screen.dart';
 
 class SignUpForm extends ConsumerStatefulWidget {
@@ -23,7 +23,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
 
   final List<String?> errors = [];
 
-  final JoinAPI joinAPI = JoinAPI();
+  final SignUpAPI signUpAPI = SignUpAPI();
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -141,12 +141,12 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                 _formKey.currentState!.save();
 
                 try {
-                  bool joinSuccess = await joinAPI.join(UserJoinReq(
+                  bool signUpSuccess = await signUpAPI.signUp(UserSignUpReq(
                     username: email!,
                     password: password!,
                   ));
 
-                  if (joinSuccess) {
+                  if (signUpSuccess) {
                     Navigator.pushNamed(context, SignUpSuccessScreen.routeName);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

@@ -1,16 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:puppicasso/api_constants.dart';
-import 'package:puppicasso/models/user_login_req.dart';
+import 'package:puppicasso/models/user_sign_in_req.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginAPI {
+class SignInAPI {
   final Dio _dio;
 
-  LoginAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
+  SignInAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
 
-  Future<bool> login(UserLoginReq userLoginReq) async {
+  Future<bool> signIn(UserSignInReq userSignInReq) async {
     try {
-      final response = await _dio.post('/login', data: userLoginReq.toJson());
+      final response = await _dio.post('/sign-in', data: userSignInReq.toJson());
 
       if (response.statusCode == 200) {
         final accessToken = response.headers['Authorization_Access']?.first;

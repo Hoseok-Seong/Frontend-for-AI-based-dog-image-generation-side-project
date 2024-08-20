@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:puppicasso/api_constants.dart';
-import 'package:puppicasso/models/user_join_req.dart';
+import 'package:puppicasso/models/user_sign_up_req.dart';
 
-class JoinAPI {
+class SignUpAPI {
   final Dio _dio;
 
-  JoinAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
+  SignUpAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
 
-  Future<bool> join(UserJoinReq userJoinReq) async {
+  Future<bool> signUp(UserSignUpReq userSignUpReq) async {
     try {
-      final response = await _dio.post('/join', data: userJoinReq.toJson());
+      final response = await _dio.post('/sign-up', data: userSignUpReq.toJson());
 
       if (response.statusCode == 200) {
         return true;

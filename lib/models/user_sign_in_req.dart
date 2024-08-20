@@ -1,11 +1,11 @@
-class UserLoginReq {
+class UserSignInReq {
   final String username;
   final String password;
 
-  UserLoginReq({required this.username, required this.password});
+  UserSignInReq({required this.username, required this.password});
 
-  factory UserLoginReq.fromJson(Map<String, dynamic> json) {
-    return UserLoginReq(
+  factory UserSignInReq.fromJson(Map<String, dynamic> json) {
+    return UserSignInReq(
       username: json['username'],
       password: json['password'],
     );
