@@ -140,16 +140,10 @@ class _SignFormState extends ConsumerState<SignForm> {
 
                 bool signInSuccess = false;
 
-                try {
-                  signInSuccess = await signInAPI.signIn(UserSignInReq(
-                    username: email!,
-                    password: password!,
-                  ));
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(e.toString())),
-                  );
-                }
+                signInSuccess = await signInAPI.signIn(UserSignInReq(
+                  username: email!,
+                  password: password!,
+                ));
 
                 if (signInSuccess) {
                   if (!mounted) return;

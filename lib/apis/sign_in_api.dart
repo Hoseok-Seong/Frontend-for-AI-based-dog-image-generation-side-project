@@ -13,8 +13,11 @@ class SignInAPI {
       final response = await _dio.post('/sign-in', data: userSignInReq.toJson());
 
       if (response.statusCode == 200) {
-        final accessToken = response.headers['Authorization_Access']?.first;
-        final refreshToken = response.headers['Authorization_Refresh']?.first;
+        // final accessToken = response.headers['Authorization_Access']?.first;
+        // final refreshToken = response.headers['Authorization_Refresh']?.first;
+
+        final accessToken = response.data['accessToken'];
+        final refreshToken = response.data['refreshToken'];
 
         if (accessToken != null && refreshToken != null) {
           final prefs = await SharedPreferences.getInstance();
@@ -27,10 +30,8 @@ class SignInAPI {
       } else {
         throw Exception("서버 오류: ${response.statusCode}");
       }
-    } on DioException catch (e) {
-      throw Exception("로그인 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
     } catch (e) {
-      throw Exception("알 수 없는 오류가 발생했습니다. 다시 시도해주세요.");
+      throw Exception("로그인 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   }
 }

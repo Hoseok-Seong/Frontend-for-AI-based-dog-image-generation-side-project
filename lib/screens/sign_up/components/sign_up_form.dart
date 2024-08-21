@@ -140,22 +140,18 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState!.save();
 
-                try {
-                  bool signUpSuccess = await signUpAPI.signUp(UserSignUpReq(
-                    username: email!,
-                    password: password!,
-                  ));
+                bool signUpSuccess = false;
 
-                  if (signUpSuccess) {
-                    Navigator.pushNamed(context, SignUpSuccessScreen.routeName);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("회원가입이 실패하였습니다")),
-                    );
-                  }
-                } catch (e) {
+                signUpSuccess = await signUpAPI.signUp(UserSignUpReq(
+                  username: email!,
+                  password: password!,
+                ));
+
+                if (signUpSuccess) {
+                  Navigator.pushNamed(context, SignUpSuccessScreen.routeName);
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(e.toString())),
+                    const SnackBar(content: Text("회원가입이 실패하였습니다")),
                   );
                 }
               }
