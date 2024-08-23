@@ -23,7 +23,7 @@ class AIImageAPI {
     });
 
     final response = await _dio.post(
-      '/api/ModelsLab/Images',
+      '/api/models-lab/images',
       data: formData,
       options: Options(
         headers: {

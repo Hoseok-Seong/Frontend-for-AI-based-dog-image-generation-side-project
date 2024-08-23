@@ -61,6 +61,7 @@ dependencies:
   flutter_native_splash: ^2.2.19
 
   # 모바일 저장소
+  flutter_secure_storage: ^9.0.0
   shared_preferences: ^2.2.2
 
   # 로그

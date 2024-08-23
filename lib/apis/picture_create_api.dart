@@ -11,7 +11,7 @@ class PictureCreateAPI {
 
   Future<PictureCreateResp> fetchData() async {
     final response = await _dio.post(
-        '/api/picture/create',
+        '/api/picture-create',
     );
 
     if (response.statusCode == 200) {

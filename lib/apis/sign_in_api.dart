@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:puppicasso/api_constants.dart';
 import 'package:puppicasso/models/user_sign_in_req.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SignInAPI {
   final Dio _dio;
+
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   SignInAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
 
@@ -13,25 +15,20 @@ class SignInAPI {
       final response = await _dio.post('/sign-in', data: userSignInReq.toJson());
 
       if (response.statusCode == 200) {
-        // final accessToken = response.headers['Authorization_Access']?.first;
-        // final refreshToken = response.headers['Authorization_Refresh']?.first;
-
         final accessToken = response.data['accessToken'];
         final refreshToken = response.data['refreshToken'];
 
-        if (accessToken != null && refreshToken != null) {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('accessToken', accessToken);
-          await prefs.setString('refreshToken', refreshToken);
-          return true;
-        } else {
-          throw Exception("토큰이 없습니다.");
-        }
+        await storage.write(key: 'accessToken', value: accessToken);
+        await storage.write(key: 'refreshToken', value: refreshToken);
+
+        return true;
       } else {
-        throw Exception("서버 오류: ${response.statusCode}");
+        throw Exception("로그인이 실패하였습니다");
       }
+    } on DioException catch (e) {
+      throw Exception("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
     } catch (e) {
-      throw Exception("로그인 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
+      throw Exception("내부 서버 오류가 발생했습니다.");
     }
   }
 }

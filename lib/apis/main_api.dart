@@ -17,8 +17,10 @@ class MainAPI {
       } else {
         throw Exception("Failed to load data");
       }
+    } on DioException catch (e) {
+      throw Exception("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
     } catch (e) {
-      throw Exception("Failed to load data: $e");
+      throw Exception("내부 서버 오류가 발생했습니다.");
     }
   }
 }

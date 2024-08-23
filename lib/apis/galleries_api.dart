@@ -11,7 +11,7 @@ class GalleriesAPI {
 
   Future<GalleriesResp> fetchData() async {
     final response = await _dio.get(
-      '/api/galleries',
+      '/api/gallery',
     );
 
     if (response.statusCode == 200) {
