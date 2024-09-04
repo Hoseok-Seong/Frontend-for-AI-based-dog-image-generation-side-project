@@ -8,6 +8,10 @@ class LogoutService {
 
     await storage.deleteAll();
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => SignInScreen()),
+          (Route<dynamic> route) => false, // 모든 이전 화면 제거
+    );
   }
 }

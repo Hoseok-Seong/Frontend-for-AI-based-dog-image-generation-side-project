@@ -67,6 +67,9 @@ dependencies:
   # 로그
   logging: ^1.0.2
 
+  # 플러터 토스트
+  fluttertoast: ^8.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

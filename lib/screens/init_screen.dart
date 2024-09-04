@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:puppicasso/screens/gallery/galleries_screen.dart';
 import 'package:puppicasso/screens/main/main_screen.dart';
 import 'package:puppicasso/screens/profile/profile_screen.dart';
@@ -84,46 +85,30 @@ class _InitScreenState extends ConsumerState<InitScreen> {
     ProfileScreen()
   ];
 
-  // Future<bool> _onWillPop() async {
-  //   return await showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       title: const Text('앱을 종료하시겠습니까?'),
-  //       content: const Text('앱을 종료하시려면 "예"를 누르세요.'),
-  //       actions: <Widget>[
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).pop(false),
-  //           child: const Text('아니요'),
-  //         ),
-  //         TextButton(
-  //           onPressed: () => Navigator.of(context).pop(true),
-  //           child: const Text('예'),
-  //         ),
-  //       ],
-  //     ),
-  //   ) ??
-  //       false;
-  // }
+  Future<bool> onWillPop(){
+
+    DateTime now = DateTime.now();
+
+    if(currentBackPressTime == null || now.difference(currentBackPressTime!)
+        > const Duration(seconds: 2))
+    {
+      currentBackPressTime = now;
+      const msg = "'뒤로'버튼을 한 번 더 누르면 종료됩니다.";
+
+      Fluttertoast.showToast(msg: msg);
+      return Future.value(false);
+    }
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    return Future.value(true);
+  }
 
   @override
   Widget build(BuildContext context) {
     final currentSelectedIndex = ref.watch(tabIndexProvider);
 
     return WillPopScope(
-      onWillPop: () async {
-        if (currentBackPressTime == null ||
-            DateTime.now().difference(currentBackPressTime!) > Duration(seconds: 2)) {
-          currentBackPressTime = DateTime.now();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('뒤로 버튼을 한 번 더 누르면 종료합니다.'),
-              duration: Duration(seconds: 2),
-            ),
-          );
-          return false;
-        }
-        return true;
-      },
+      onWillPop: onWillPop,
       child: Scaffold(
         appBar: AppBar(
           leadingWidth: 150,
