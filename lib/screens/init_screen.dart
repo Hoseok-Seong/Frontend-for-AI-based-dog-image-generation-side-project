@@ -16,17 +16,17 @@ const Color kSecondaryColor = Color(0xFF979797);
 class TabIndexNotifier extends StateNotifier<int> {
   TabIndexNotifier() : super(0);
 
-  void updateIndex(int newIndex, WidgetRef ref) {
+  void updateIndex(BuildContext context, int newIndex, WidgetRef ref) {
     state = newIndex;
     switch (newIndex) {
       case 0:
-        ref.read(mainViewModelProvider.notifier).fetchData();
+        ref.read(mainViewModelProvider.notifier).fetchData(context);
         break;
       case 1:
-        ref.read(pictureCreateViewModelProvider.notifier).fetchData();
+        ref.read(pictureCreateViewModelProvider.notifier).fetchData(context);
         break;
       case 2:
-        ref.read(galleriesViewModelProvider.notifier).fetchData();
+        ref.read(galleriesViewModelProvider.notifier).fetchData(context);
         break;
       case 3:
         break;
@@ -73,7 +73,7 @@ class _InitScreenState extends ConsumerState<InitScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(mainViewModelProvider.notifier).fetchData();
+      ref.read(mainViewModelProvider.notifier).fetchData(context);
     });
   }
 
@@ -152,7 +152,7 @@ class _InitScreenState extends ConsumerState<InitScreen> {
         backgroundColor: kSecondaryColor,
         bottomNavigationBar: BottomNavigationBar(
           onTap: (index) {
-            ref.read(tabIndexProvider.notifier).updateIndex(index, ref);
+            ref.read(tabIndexProvider.notifier).updateIndex(context, index, ref);
           },
           currentIndex: currentSelectedIndex,
           showSelectedLabels: true,

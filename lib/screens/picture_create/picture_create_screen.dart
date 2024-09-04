@@ -40,7 +40,7 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(pictureCreateViewModelProvider.notifier).fetchData();
+      ref.read(pictureCreateViewModelProvider.notifier).fetchData(context);
     });
   }
 
@@ -309,7 +309,7 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                             );
 
                             try {
-                              AIImageResp response = await AIImageAPI().generateAIImage(_image!, aiImageReq);
+                              AIImageResp response = await AIImageAPI().generateAIImage(context, _image!, aiImageReq);
 
                               // 응답받은 imageUrl을 다이얼로그로 표시
                               showDialog(

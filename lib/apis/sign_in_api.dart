@@ -4,15 +4,15 @@ import 'package:puppicasso/models/user_sign_in_req.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SignInAPI {
-  final Dio _dio;
+  final Dio dio;
 
   final FlutterSecureStorage storage = const FlutterSecureStorage();
 
-  SignInAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
+  SignInAPI() : dio = Dio(BaseOptions(baseUrl: baseUrl));
 
   Future<bool> signIn(UserSignInReq userSignInReq) async {
     try {
-      final response = await _dio.post('/sign-in', data: userSignInReq.toJson());
+      final response = await dio.post('/sign-in', data: userSignInReq.toJson());
 
       if (response.statusCode == 200) {
         final accessToken = response.data['accessToken'];

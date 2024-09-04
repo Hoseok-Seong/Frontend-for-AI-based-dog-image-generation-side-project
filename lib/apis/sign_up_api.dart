@@ -3,13 +3,13 @@ import 'package:puppicasso/api_constants.dart';
 import 'package:puppicasso/models/user_sign_up_req.dart';
 
 class SignUpAPI {
-  final Dio _dio;
+  final Dio dio;
 
-  SignUpAPI() : _dio = Dio(BaseOptions(baseUrl: baseUrl));
+  SignUpAPI() : dio = Dio(BaseOptions(baseUrl: baseUrl));
 
   Future<bool> signUp(UserSignUpReq userSignUpReq) async {
     try {
-      final response = await _dio.post('/sign-up', data: userSignUpReq.toJson());
+      final response = await dio.post('/sign-up', data: userSignUpReq.toJson());
 
       if (response.statusCode == 200) {
         return true;

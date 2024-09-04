@@ -111,7 +111,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              "shsshs0125@naver.com",
+              "hoselabs@gmail.com",
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.blue,

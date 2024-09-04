@@ -1,17 +1,14 @@
 import 'package:dio/dio.dart';
-import 'package:puppicasso/interceptor/dio_interceptor.dart';
+import 'package:flutter/material.dart';
+import 'package:puppicasso/apis/auth_dio.dart';
 import 'package:puppicasso/models/main_resp.dart';
 
 class MainAPI {
-  late final Dio _dio;
-
-  MainAPI() {
-    _dio = DioInterceptor.getDio();
-  }
-
-  Future<MainResp> fetchData() async {
+  Future<MainResp> fetchData(BuildContext context) async {
     try {
-      final response = await _dio.get('/api/main');
+      var dio = await authDio(context);
+      final response = await dio.get('/api/main');
+
       if (response.statusCode == 200) {
         return MainResp.fromJson(response.data);
       } else {

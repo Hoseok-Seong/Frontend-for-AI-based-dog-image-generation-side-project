@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puppicasso/apis/main_api.dart';
 import 'package:puppicasso/models/main_resp.dart';
@@ -40,10 +41,10 @@ class MainViewModel extends StateNotifier<MainState> {
 
   MainViewModel(this.api) : super(MainState());
 
-  Future<void> fetchData() async {
+  Future<void> fetchData(BuildContext context) async {
     state = state.copyWith(isLoading: true);
     try {
-      final data = await api.fetchData();
+      final data = await api.fetchData(context);
       state = state.copyWith(data: data, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());

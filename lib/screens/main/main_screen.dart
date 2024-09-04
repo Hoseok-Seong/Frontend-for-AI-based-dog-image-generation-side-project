@@ -57,7 +57,7 @@ class MainScreen extends ConsumerWidget {
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          ref.read(tabIndexProvider.notifier).updateIndex(1, ref);
+                          ref.read(tabIndexProvider.notifier).updateIndex(context, 1, ref);
                         },
                         child: Text("지금 바로 사진 생성하기"),
                       ),
@@ -213,7 +213,7 @@ class MainScreen extends ConsumerWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  ref.read(tabIndexProvider.notifier).updateIndex(2, ref);
+                                  ref.read(tabIndexProvider.notifier).updateIndex(context, 2, ref);
                                 },
                                 child: const Text(
                                   "갤러리로 이동하기",
