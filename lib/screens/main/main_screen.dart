@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puppicasso/screens/init_screen.dart';
@@ -226,7 +227,7 @@ class MainScreen extends ConsumerWidget {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          data.fileData.isEmpty
+                          data.imageUrls.isEmpty
                               ? const Center(
                                 child: Text(
                                   "아직 생성한 사진이 없습니다.",
@@ -237,18 +238,35 @@ class MainScreen extends ConsumerWidget {
                                 ),
                               )
                               : Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: data.fileData.map((base64Image) {
-                              Uint8List imageBytes = base64Decode(base64Image);
-                              return ClipOval(
-                                child: Image.memory(
-                                  imageBytes,
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            }).toList(),
+                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                // children: data.fileData.map((base64Image) {
+                                //   Uint8List imageBytes = base64Decode(base64Image);
+                                //   return ClipOval(
+                                //     child: Image.memory(
+                                //       imageBytes,
+                                //       width: 50,
+                                //       height: 50,
+                                //       fit: BoxFit.cover,
+                                //     ),
+                                //   );
+                                // }).toList(),
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: data.imageUrls.map((imageUrl) {
+                                  return ClipOval(
+                                    child: CachedNetworkImage(
+                                      imageUrl: imageUrl,
+                                      width: 50,
+                                      height: 50,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Center(
+                                        child: CircularProgressIndicator(), // 로딩 중 표시
+                                      ),
+                                      errorWidget: (context, url, error) => Center(
+                                        child: Icon(Icons.error, color: Colors.red), // 에러 표시
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
                           ),
                           // Row(
                           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puppicasso/viewmodels/galleries_view_model.dart';
@@ -75,7 +76,7 @@ class GalleriesScreen extends ConsumerWidget {
                         Center(child: CircularProgressIndicator())
                       else if (state.errorMessage != null)
                         Center(child: Text('Error: ${state.errorMessage}'))
-                      else if (state.data?.fileData.isEmpty ?? true)
+                      else if (state.data?.imageUrls.isEmpty ?? true)
                           Center(child: Text('갤러리에 저장된 사진이 없습니다.', style: TextStyle(fontSize: 16, color: Colors.grey)))
                         else
                           GridView.builder(
@@ -86,16 +87,22 @@ class GalleriesScreen extends ConsumerWidget {
                               crossAxisCount: 3,
                               childAspectRatio: 1.0,
                             ),
-                            itemCount: state.data?.fileData.length ?? 0,
+                            itemCount: state.data?.imageUrls.length ?? 0,
                             itemBuilder: (context, index) {
-                              final base64String = state.data!.fileData[index];
-                              final bytes = base64Decode(base64String);
+                              final imageUrl = state.data!.imageUrls[index];
+                              // final bytes = base64Decode(base64String);
                               return Card(
                                 child: Center(
-                                  child: Image.memory(
-                                    bytes,
-                                    fit: BoxFit.cover,
+                                  child: CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    placeholder: (context, url) => CircularProgressIndicator(), // 로딩 중 표시
+                                    errorWidget: (context, url, error) => Icon(Icons.error), // 에러 표시
+                                    fit: BoxFit.cover, // 이미지의 크기 조절
                                   ),
+                                  // child: Image.memory(
+                                  //   bytes,
+                                  //   fit: BoxFit.cover,
+                                  // ),
                                 ),
                               );
                             },

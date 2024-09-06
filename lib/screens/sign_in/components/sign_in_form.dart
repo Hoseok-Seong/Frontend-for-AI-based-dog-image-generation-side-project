@@ -108,16 +108,16 @@ class _SignFormState extends ConsumerState<SignForm> {
           const SizedBox(height: 20),
           Row(
             children: [
-              Checkbox(
-                value: remember,
-                activeColor: kPrimaryColor,
-                onChanged: (value) {
-                  setState(() {
-                    remember = value;
-                  });
-                },
-              ),
-              const Text("아이디 기억하기"),
+              // Checkbox(
+              //   value: remember,
+              //   activeColor: kPrimaryColor,
+              //   onChanged: (value) {
+              //     setState(() {
+              //       remember = value;
+              //     });
+              //   },
+              // ),
+              // const Text("아이디 기억하기"),
               const Spacer(),
               GestureDetector(
                 onTap: () => Navigator.pushNamed(
