@@ -7,6 +7,7 @@ import 'package:puppicasso/models/ai_image_req.dart';
 import 'package:puppicasso/models/ai_image_resp.dart';
 import 'package:puppicasso/viewmodels/picture_create_view_model.dart';
 import 'package:puppicasso/models/picture_create_resp.dart';
+import 'package:image_downloader/image_downloader.dart';
 
 class PictureCreateScreen extends ConsumerStatefulWidget {
   static String routeName = "/picture_create";
@@ -46,16 +47,7 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
 
   String? _selectedBreed;
   String? _selectedSize;
-  String? _selectedCoatLength;
-  String? _selectedFurTexture;
-  String? _selectedEyeColor;
-  String? _selectedEarShape;
-  String? _selectedNoseShape;
-  String? _selectedFaceShape;
-  String? _selectedTailShape;
   String? _selectedExpression;
-  String? _selectedPose;
-  String? _selectedCoatColor;
 
   Widget buildDropdown(String label, List<Attribute> items, String? selectedItem, ValueChanged<String?> onChanged) {
     return DropdownButtonFormField<String>(
@@ -90,6 +82,29 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
       iconEnabledColor: Colors.blueAccent,
       dropdownColor: Colors.white,
     );
+  }
+
+  void downloadImage(String imageUrl) async {
+    try {
+      // 이미지 다운로드
+      var imageId = await ImageDownloader.downloadImage(imageUrl);
+      if (imageId == null) {
+        return;
+      }
+      // 다운로드 성공 시 알림
+      var path = await ImageDownloader.findPath(imageId);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('이미지가 저장되었습니다: $path'),
+        ),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('이미지 다운로드 실패: $error'),
+        ),
+      );
+    }
   }
 
   @override
@@ -218,63 +233,9 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                         });
                       }),
                       const SizedBox(height: 10),
-                      buildDropdown('털 길이', attributes.coatLengths, _selectedCoatLength, (value) {
-                        setState(() {
-                          _selectedCoatLength = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('털 텍스처', attributes.furTextures, _selectedFurTexture, (value) {
-                        setState(() {
-                          _selectedFurTexture = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('눈 색깔', attributes.eyeColors, _selectedEyeColor, (value) {
-                        setState(() {
-                          _selectedEyeColor = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('귀 모양', attributes.earShapes, _selectedEarShape, (value) {
-                        setState(() {
-                          _selectedEarShape = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('코 모양', attributes.noseShapes, _selectedNoseShape, (value) {
-                        setState(() {
-                          _selectedNoseShape = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('얼굴 모양', attributes.faceShapes, _selectedFaceShape, (value) {
-                        setState(() {
-                          _selectedFaceShape = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('꼬리 모양', attributes.tailShapes, _selectedTailShape, (value) {
-                        setState(() {
-                          _selectedTailShape = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
                       buildDropdown('표정', attributes.expressions, _selectedExpression, (value) {
                         setState(() {
                           _selectedExpression = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('자세', attributes.poses, _selectedPose, (value) {
-                        setState(() {
-                          _selectedPose = value;
-                        });
-                      }),
-                      const SizedBox(height: 10),
-                      buildDropdown('털 색깔', attributes.coatColors, _selectedCoatColor, (value) {
-                        setState(() {
-                          _selectedCoatColor = value;
                         });
                       }),
                       const SizedBox(height: 10),
@@ -283,29 +244,16 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.pink.shade300),
                         ),
                         onPressed: () async {
-                          if (_image == null || _selectedBreed == null || _selectedSize == null ||
-                              _selectedCoatLength == null || _selectedFurTexture == null ||
-                              _selectedEyeColor == null || _selectedEarShape == null ||
-                              _selectedNoseShape == null || _selectedFaceShape == null ||
-                              _selectedTailShape == null || _selectedExpression == null ||
-                              _selectedPose == null || _selectedCoatColor == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("모든 필드를 선택해주세요")),
-                            );
+                          if (_image == null || _selectedBreed == null || _selectedSize == null
+                              || _selectedExpression == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("모든 필드를 선택해주세요")),
+                          );
                           } else {
                             AIImageReq aiImageReq = AIImageReq(
                               breed: _selectedBreed!,
                               sizeDesc: _selectedSize!,
-                              coatLength: _selectedCoatLength!,
-                              coatColor: _selectedCoatColor!,
-                              furTexture: _selectedFurTexture!,
-                              eyeColor: _selectedEyeColor!,
-                              earShape: _selectedEarShape!,
-                              noseShape: _selectedNoseShape!,
-                              faceShape: _selectedFaceShape!,
-                              tailShape: _selectedTailShape!,
                               expression: _selectedExpression!,
-                              pose: _selectedPose!,
                             );
 
                             try {
@@ -316,12 +264,42 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('AI 이미지 생성 성공'),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15.0),
+                                    ),
+                                    title: Row(
+                                      children: [
+                                        Icon(Icons.check_circle_outline, color: Colors.green, size: 30),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          'AI 이미지 생성 성공',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                     content: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Image.network(response.imageUrl),
-                                        Text('이미지 생성에 성공했습니다.'),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.1),
+                                                blurRadius: 10,
+                                                offset: Offset(0, 5),
+                                              ),
+                                            ],
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: Image.network(response.imageUrl),
+                                          ),
+                                        ),
+                                        SizedBox(height: 20),
                                       ],
                                     ),
                                     actions: [
@@ -329,16 +307,55 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text('닫기'),
+                                        child: Text(
+                                          '닫기',
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                      TextButton(
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.blueAccent,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(8),
+                                          ),
+                                        ),
                                         onPressed: () {
-                                          // 다운로드 로직 추가
+                                          // downloadImage(response.imageUrl); // 다운로드 로직 실행
                                         },
-                                        child: Text('다운로드'),
+                                        child: Text(
+                                          '다운로드',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ],
                                   );
+                                  // return AlertDialog(
+                                  //   title: Text('AI 이미지 생성 성공'),
+                                  //   content: Column(
+                                  //     mainAxisSize: MainAxisSize.min,
+                                  //     children: [
+                                  //       Image.network(response.imageUrl),
+                                  //       Text('이미지 생성에 성공했습니다.'),
+                                  //     ],
+                                  //   ),
+                                  //   actions: [
+                                  //     TextButton(
+                                  //       onPressed: () {
+                                  //         Navigator.of(context).pop();
+                                  //       },
+                                  //       child: Text('닫기'),
+                                  //     ),
+                                  //     TextButton(
+                                  //       onPressed: () {
+                                  //         // 다운로드 로직 추가
+                                  //       },
+                                  //       child: Text('다운로드'),
+                                  //     ),
+                                  //   ],
+                                  // );
                                 },
                               );
                             } catch (e) {

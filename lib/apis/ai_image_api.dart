@@ -30,6 +30,18 @@ class AIImageAPI {
         ),
       );
 
+      if (response.data['code'] == 'A001') {
+        throw Exception("최대 이미지 사이즈인 10mb를 초과하였습니다.");
+      }
+
+      if (response.data['code'] == 'A002') {
+        throw Exception("유효한 이미지 파일 형식이 아닙니다.");
+      }
+
+      if (response.data['code'] == 'S001') {
+        throw Exception("유효기간이 만료되었거나, 가능한 사용 횟수를 초과한 구독권입니다.");
+      }
+
       if (response.statusCode == 200) {
         return AIImageResp.fromJson(response.data);
       } else {

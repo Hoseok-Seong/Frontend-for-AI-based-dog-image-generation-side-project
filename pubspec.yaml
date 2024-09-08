@@ -73,6 +73,9 @@ dependencies:
   # 네트워크 이미지 캐싱
   cached_network_image: ^3.3.0
 
+  # 이미지 다운로드
+  image_downloader: ^0.31.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -24,7 +24,7 @@ Future<Dio> authDio(BuildContext context) async {
       final accessToken = await storage.read(key: 'accessToken');
       final refreshToken = await storage.read(key: 'refreshToken');
 
-      var refreshDio = Dio();
+      var refreshDio = Dio(BaseOptions(baseUrl: baseUrl));
 
       refreshDio.interceptors.clear();
 
