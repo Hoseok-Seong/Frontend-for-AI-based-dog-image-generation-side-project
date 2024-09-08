@@ -11,6 +11,7 @@ class AIImageReq {
   final String? tailShape;
   final String? expression;
   final String? pose;
+  final String? theme;
 
   AIImageReq({
     this.breed,
@@ -25,6 +26,7 @@ class AIImageReq {
     this.tailShape,
     this.expression,
     this.pose,
+    this.theme,
   });
 
   Map<String, dynamic> toJson() {
@@ -41,6 +43,7 @@ class AIImageReq {
       'tailShape': tailShape ?? '',
       'expression': expression ?? '',
       'pose': pose ?? '',
+      'theme': theme ?? '',
     };
   }
 }

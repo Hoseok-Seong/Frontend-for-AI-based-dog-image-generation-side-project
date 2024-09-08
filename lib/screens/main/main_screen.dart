@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:puppicasso/screens/init_screen.dart';
 import 'package:puppicasso/viewmodels/main_view_model.dart';
-import 'dart:convert';
-import 'dart:typed_data';
 
 class MainScreen extends ConsumerWidget {
   static String routeName = "/api/main";
@@ -58,7 +56,9 @@ class MainScreen extends ConsumerWidget {
                       const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
-                          ref.read(tabIndexProvider.notifier).updateIndex(context, 1, ref);
+                          ref
+                              .read(tabIndexProvider.notifier)
+                              .updateIndex(context, 1, ref);
                         },
                         child: Text("지금 바로 사진 생성하기"),
                       ),
@@ -214,7 +214,9 @@ class MainScreen extends ConsumerWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  ref.read(tabIndexProvider.notifier).updateIndex(context, 2, ref);
+                                  ref
+                                      .read(tabIndexProvider.notifier)
+                                      .updateIndex(context, 2, ref);
                                 },
                                 child: const Text(
                                   "갤러리로 이동하기",
@@ -229,90 +231,40 @@ class MainScreen extends ConsumerWidget {
                           const SizedBox(height: 10),
                           data.imageUrls.isEmpty
                               ? const Center(
-                                child: Text(
-                                  "아직 생성한 사진이 없습니다.",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              )
-                              : Row(
-                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                // children: data.fileData.map((base64Image) {
-                                //   Uint8List imageBytes = base64Decode(base64Image);
-                                //   return ClipOval(
-                                //     child: Image.memory(
-                                //       imageBytes,
-                                //       width: 50,
-                                //       height: 50,
-                                //       fit: BoxFit.cover,
-                                //     ),
-                                //   );
-                                // }).toList(),
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: data.imageUrls.map((imageUrl) {
-                                  return ClipOval(
-                                    child: CachedNetworkImage(
-                                      imageUrl: imageUrl,
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => Center(
-                                        child: CircularProgressIndicator(), // 로딩 중 표시
-                                      ),
-                                      errorWidget: (context, url, error) => Center(
-                                        child: Icon(Icons.error, color: Colors.red), // 에러 표시
-                                      ),
+                                  child: Text(
+                                    "아직 생성한 사진이 없습니다.",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey,
                                     ),
-                                  );
-                                }).toList(),
-                          ),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: [
-                          //     ClipOval(
-                          //       child: Image.asset(
-                          //         "assets/images/splash_image1.webp",
-                          //         width: 50,
-                          //         height: 50,
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //     ),
-                          //     ClipOval(
-                          //       child: Image.asset(
-                          //         "assets/images/splash_image2.webp",
-                          //         width: 50,
-                          //         height: 50,
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //     ),
-                          //     ClipOval(
-                          //       child: Image.asset(
-                          //         "assets/images/splash_image3.webp",
-                          //         width: 50,
-                          //         height: 50,
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //     ),
-                          //     ClipOval(
-                          //       child: Image.asset(
-                          //         "assets/images/splash_image1.webp",
-                          //         width: 50,
-                          //         height: 50,
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //     ),
-                          //     ClipOval(
-                          //       child: Image.asset(
-                          //         "assets/images/splash_image2.webp",
-                          //         width: 50,
-                          //         height: 50,
-                          //         fit: BoxFit.cover,
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                                  ),
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: data.imageUrls.map((imageUrl) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6.0),
+                                      child: ClipOval(
+                                        child: CachedNetworkImage(
+                                          imageUrl: imageUrl,
+                                          width: 50,
+                                          height: 50,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => Center(
+                                            child:
+                                                CircularProgressIndicator(), // 로딩 중 표시
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Center(
+                                            child: Icon(Icons.error,
+                                                color: Colors.red), // 에러 표시
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
                         ],
                       ),
                     ),

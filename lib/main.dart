@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puppicasso/screens/init_screen.dart';
 import 'package:puppicasso/screens/sign_in/sign_in_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'puppicasso',
       theme: AppTheme.lightTheme(context),
-      initialRoute: SignInScreen.routeName,
+      initialRoute: InitScreen.routeName,
       routes: routes,
     );
   }
