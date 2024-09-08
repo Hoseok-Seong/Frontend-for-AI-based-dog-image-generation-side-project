@@ -14,7 +14,7 @@ class GalleriesScreen extends ConsumerWidget {
     final state = ref.watch(galleriesViewModelProvider);
 
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

@@ -141,7 +141,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(mainViewModelProvider);
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(10),

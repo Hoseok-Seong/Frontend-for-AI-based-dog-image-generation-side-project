@@ -111,7 +111,7 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white70,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

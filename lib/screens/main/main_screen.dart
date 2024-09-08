@@ -25,7 +25,7 @@ class MainScreen extends ConsumerWidget {
     } else {
       final data = viewModel.data!;
       return Scaffold(
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.all(10),
@@ -79,7 +79,7 @@ class MainScreen extends ConsumerWidget {
                         children: <Widget>[
                           SizedBox(height: 14),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               RichText(
                                 text: TextSpan(
@@ -107,7 +107,7 @@ class MainScreen extends ConsumerWidget {
                           ),
                           SizedBox(height: 12),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               RichText(
                                 text: TextSpan(
@@ -135,7 +135,7 @@ class MainScreen extends ConsumerWidget {
                           ),
                           SizedBox(height: 12),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               RichText(
                                 text: TextSpan(
@@ -163,7 +163,7 @@ class MainScreen extends ConsumerWidget {
                           ),
                           SizedBox(height: 12),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               RichText(
                                 text: TextSpan(
