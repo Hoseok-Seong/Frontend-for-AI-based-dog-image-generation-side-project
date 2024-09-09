@@ -39,9 +39,9 @@ Future<Dio> authDio(BuildContext context) async {
         return handler.next(error);
       }));
 
-      refreshDio.options.headers['Authorization_Access'] = accessToken;
-      refreshDio.options.headers['Authorization_Refresh'] = refreshToken;
-
+      // TODO: NewAccessTokenReq 만들어서 요청해야 함.
+      // refreshDio.options.headers['Authorization_Access'] = accessToken;
+      // refreshDio.options.headers['Authorization_Refresh'] = refreshToken;
       final refreshResponse = await refreshDio.post('/access-token');
 
       final newAccessToken = refreshResponse.data['accessToken'];

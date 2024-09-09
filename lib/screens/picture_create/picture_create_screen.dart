@@ -51,42 +51,66 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
 
   Widget buildDropdown(String label, List<Attribute>? items,
       String? selectedItem, ValueChanged<String?> onChanged) {
-    return DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: Colors.black, fontSize: 16),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.black, width: 1),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.black, width: 1),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: Colors.black, width: 2),
-        ),
+    return Container(
+      height: 70,
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.blue),
+        borderRadius: BorderRadius.circular(10),
       ),
-      value: selectedItem,
-      items: items?.map((attribute) {
-        return DropdownMenuItem<String>(
-          value: attribute.value,
-          child: Container(
-            alignment: Alignment.centerLeft,
-            child: Text(attribute.name),
-          ),
-        );
-      }).toList(),
-      onChanged: onChanged,
-      isExpanded: true,
-      style: TextStyle(color: Colors.black),
-      iconEnabledColor: Colors.blueAccent,
-      dropdownColor: Colors.white,
-      icon: Icon(Icons.arrow_drop_down, color: Colors.blueAccent),
-    );
+      child: DropdownButton<String>(
+
+        items: items?.map((attribute) {
+              return DropdownMenuItem<String>(
+                value: attribute.value,
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(attribute.name),
+                ),
+              );
+            }).toList(), onChanged: (String? value) {  },
+        isDense: true,
+        isExpanded: true,
+        menuMaxHeight: 200,
+      ));
+      // child: DropdownButtonFormField<String>(
+      //   decoration: InputDecoration(
+      //     labelText: label,
+      //     labelStyle: TextStyle(color: Colors.black, fontSize: 16),
+      //     filled: true,
+      //     fillColor: Colors.white,
+      //     border: OutlineInputBorder(
+      //       borderRadius: BorderRadius.circular(12),
+      //       borderSide: BorderSide(color: Colors.black, width: 1),
+      //     ),
+      //     enabledBorder: OutlineInputBorder(
+      //       borderRadius: BorderRadius.circular(12),
+      //       borderSide: BorderSide(color: Colors.black, width: 1),
+      //     ),
+      //     focusedBorder: OutlineInputBorder(
+      //       borderRadius: BorderRadius.circular(12),
+      //       borderSide: BorderSide(color: Colors.black, width: 2),
+      //     ),
+      //   ),
+      //   value: selectedItem,
+      //   items: items?.map((attribute) {
+      //     return DropdownMenuItem<String>(
+      //       value: attribute.value,
+      //       child: Container(
+      //         alignment: Alignment.centerLeft,
+      //         child: Text(attribute.name),
+      //       ),
+      //     );
+      //   }).toList(),
+      //   onChanged: onChanged,
+      //   isExpanded: true,
+      //   style: TextStyle(color: Colors.black),
+      //   iconEnabledColor: Colors.blueAccent,
+      //   dropdownColor: Colors.white,
+      //   icon: Icon(Icons.arrow_drop_down, color: Colors.blueAccent),
+      //   menuMaxHeight: 200,
+      //   isDense: true,
+      // ),
   }
 
   void downloadImage(String imageUrl) async {
