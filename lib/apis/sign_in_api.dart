@@ -15,9 +15,11 @@ class SignInAPI {
       final response = await dio.post('/sign-in', data: userSignInReq.toJson());
 
       if (response.statusCode == 200) {
+        final userId = response.data['id'];
         final accessToken = response.data['accessToken'];
         final refreshToken = response.data['refreshToken'];
 
+        await storage.write(key: 'userId', value: userId.toString());
         await storage.write(key: 'accessToken', value: accessToken);
         await storage.write(key: 'refreshToken', value: refreshToken);
 

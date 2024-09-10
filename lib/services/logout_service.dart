@@ -8,14 +8,8 @@ class LogoutService {
 
     await storage.deleteAll();
 
-    // TODO: POP으로 해보기
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => SignInScreen()), (
         route) => false);
-
-    // Navigator.pop(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => Navigator),
-    // );
   }
 }

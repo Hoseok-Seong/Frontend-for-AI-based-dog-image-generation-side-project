@@ -52,27 +52,73 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
   Widget buildDropdown(String label, List<Attribute>? items,
       String? selectedItem, ValueChanged<String?> onChanged) {
     return Container(
-      height: 70,
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      height: 60,
+      padding: EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.blue),
+        border: Border.all(color: Colors.black, width: 1),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: DropdownButton<String>(
+      child: Center(  // 드롭다운을 컨테이너 중앙에 배치
+        child: DropdownButton<String>(
+          alignment: Alignment.center,
+          focusColor: Colors.blueAccent,
+          value: selectedItem,
+          items: items?.map((attribute) {
+            return DropdownMenuItem<String>(
+              value: attribute.value,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: Text(attribute.name),
+              ),
+            );
+          }).toList(),
+          onChanged: onChanged,
+          isDense: true,
+          isExpanded: true,
+          menuMaxHeight: 200,
+          style: TextStyle(color: Colors.black),
+          iconEnabledColor: Colors.blueAccent,
+          dropdownColor: Colors.white,
+          icon: Icon(Icons.arrow_drop_down, color: Colors.blueAccent),
+          underline: SizedBox(),
+        ),
+      ),
+    );
+  }
 
-        items: items?.map((attribute) {
-              return DropdownMenuItem<String>(
-                value: attribute.value,
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(attribute.name),
-                ),
-              );
-            }).toList(), onChanged: (String? value) {  },
-        isDense: true,
-        isExpanded: true,
-        menuMaxHeight: 200,
-      ));
+  // Widget buildDropdown(String label, List<Attribute>? items,
+  //     String? selectedItem, ValueChanged<String?> onChanged) {
+  //   return Container(
+  //     height: 60,
+  //     padding: EdgeInsets.symmetric(horizontal: 20),
+  //     decoration: BoxDecoration(
+  //       border: Border.all(color: Colors.black, width: 1),
+  //       borderRadius: BorderRadius.circular(10),
+  //     ),
+  //     child: DropdownButton<String>(
+  //       alignment: Alignment.center,
+  //       focusColor: Colors.blueAccent,
+  //       value: selectedItem,
+  //       items: items?.map((attribute) {
+  //             return DropdownMenuItem<String>(
+  //               value: attribute.value,
+  //               child: Container(
+  //                 alignment: Alignment.centerLeft,
+  //                 child: Text(attribute.name),
+  //               ),
+  //             );
+  //           }).toList(),
+  //       onChanged: onChanged,
+  //       isDense: true,
+  //       isExpanded: true,
+  //       menuMaxHeight: 200,
+  //       style: TextStyle(color: Colors.black),
+  //       iconEnabledColor: Colors.blueAccent,
+  //       dropdownColor: Colors.white,
+  //       icon: Icon(Icons.arrow_drop_down, color: Colors.blueAccent),
+  //       underline: SizedBox(),
+  //     ));
+
       // child: DropdownButtonFormField<String>(
       //   decoration: InputDecoration(
       //     labelText: label,
@@ -111,7 +157,7 @@ class _PictureCreateScreenState extends ConsumerState<PictureCreateScreen> {
       //   menuMaxHeight: 200,
       //   isDense: true,
       // ),
-  }
+  // }
 
   void downloadImage(String imageUrl) async {
     // try {
