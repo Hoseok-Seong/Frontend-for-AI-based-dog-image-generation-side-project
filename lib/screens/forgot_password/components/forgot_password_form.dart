@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:puppicasso/apis/password_reset_api.dart';
+import 'package:puppicasso/models/user_reset_password_req.dart';
+import 'package:puppicasso/screens/sign_in/sign_in_screen.dart';
 
 import '../../../components/custom_surfix_icon.dart';
 import '../../../components/form_error.dart';
@@ -16,6 +19,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final _formKey = GlobalKey<FormState>();
   List<String> errors = [];
   String? email;
+
+  final PasswordResetAPI passwordResetAPI = PasswordResetAPI();
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -62,9 +68,28 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
           FormError(errors: errors),
           const SizedBox(height: 8),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                // Do what you want to do
+                _formKey.currentState!.save();
+
+                bool resetPasswordSuccess = false;
+
+                resetPasswordSuccess = await passwordResetAPI.passwordReset(
+                    UserResetPasswordReq(username: email!));
+                if (resetPasswordSuccess) {
+                  if (!mounted) return;
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignInScreen(),
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("'비밀번호 찾기'가 실패하였습니다")),
+                  );
+                }
               }
             },
             child: const Text("비밀번호 찾기"),

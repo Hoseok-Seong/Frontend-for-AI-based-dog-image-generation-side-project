@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:puppicasso/api_constants.dart';
-import 'package:puppicasso/models/user_sign_in_req.dart';
+import 'package:puppicasso/models/user_reset_password_req.dart';
 
 class PasswordResetAPI {
   final Dio dio;
 
   PasswordResetAPI() : dio = Dio(BaseOptions(baseUrl: baseUrl));
 
-  Future<bool> passwordReset(UserSignInReq userSignInReq) async {
+  Future<bool> passwordReset(UserResetPasswordReq userResetPasswordReq) async {
     try {
-      final response = await dio.post('/password-reset', data: userSignInReq.toJson());
+      final response = await dio.post('/password-reset', data: userResetPasswordReq.toJson());
 
       if (response.statusCode == 200) {
 
